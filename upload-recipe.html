@@ -252,6 +252,85 @@
     </footer>
 
     <script>
+        // Remove base path for local development
+        const basePath = '';
+        
+        // Update all navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                link.setAttribute('href', href);
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('recipeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const currentUser = localStorage.getItem('userEmail');
+            if (!currentUser) {
+                alert('Please log in to upload a recipe');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const imageFile = document.getElementById('recipeImage').files[0];
+            let imageBase64 = '';
+            
+            if (imageFile) {
+                imageBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(imageFile);
+                });
+            }
+
+            const recipeData = {
+                name: document.getElementById('recipeName').value,
+                description: document.getElementById('recipeDescription').value,
+                prepTime: parseInt(document.getElementById('prepTime').value),
+                cookTime: parseInt(document.getElementById('cookTime').value),
+                servings: parseInt(document.getElementById('servings').value),
+                ingredients: Array.from(document.querySelectorAll('input[name="ingredients[]"]')).map(input => input.value.trim()),
+                instructions: Array.from(document.querySelectorAll('textarea[name="instructions[]"]')).map(textarea => textarea.value.trim()),
+                nutrition: {
+                    calories: parseInt(document.getElementById('calories').value),
+                    protein: parseInt(document.getElementById('protein').value),
+                    carbs: parseInt(document.getElementById('carbs').value),
+                    fiber: parseInt(document.getElementById('fiber').value)
+                },
+                image: imageBase64,
+                author: currentUser,
+                date: new Date().toISOString(),
+                likes: 0,
+                likedBy: [],
+                comments: []
+            };
+
+            // Validate required fields
+            if (!recipeData.name || !recipeData.description || !recipeData.ingredients.length || !recipeData.instructions.length) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Get existing recipes
+            const recipes = JSON.parse(localStorage.getItem('userRecipes')) || [];
+            
+            // Check for duplicate recipe name
+            if (recipes.some(r => r.name === recipeData.name)) {
+                alert('A recipe with this name already exists');
+                return;
+            }
+
+            // Add new recipe
+            recipes.push(recipeData);
+            localStorage.setItem('userRecipes', JSON.stringify(recipes));
+
+            alert('Recipe uploaded successfully!');
+            window.location.href = 'recipes.html';
+        });
+
         // Dark mode functionality
         function initDarkMode() {
             if (localStorage.getItem('darkMode') === 'true' || 
@@ -326,86 +405,6 @@
         function removeInstruction(button) {
             button.parentElement.remove();
         }
-
-        // Form submission
-        document.getElementById('recipeForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Check if user is logged in
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                alert('Please log in to share a recipe');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Get the image file
-            const imageFile = document.getElementById('recipeImage').files[0];
-            if (!imageFile) {
-                alert('Please select an image for your recipe');
-                return;
-            }
-
-            // Convert image to base64
-            const imageBase64 = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(imageFile);
-            });
-
-            // Collect form data
-            const formData = new FormData(this);
-            const recipeData = {
-                name: formData.get('recipeName'),
-                description: formData.get('recipeDescription'),
-                prepTime: parseInt(formData.get('prepTime')),
-                cookTime: parseInt(formData.get('cookTime')),
-                servings: parseInt(formData.get('servings')),
-                ingredients: Array.from(formData.getAll('ingredients[]')).filter(ing => ing.trim() !== ''),
-                instructions: Array.from(formData.getAll('instructions[]')).filter(inst => inst.trim() !== ''),
-                nutrition: {
-                    calories: parseInt(formData.get('calories')),
-                    protein: parseInt(formData.get('protein')),
-                    carbs: parseInt(formData.get('carbs')),
-                    fiber: parseInt(formData.get('fiber'))
-                },
-                image: imageBase64,
-                author: currentUser,
-                date: new Date().toISOString(),
-                likes: 0,
-                likedBy: [],
-                comments: []
-            };
-
-            // Validate required fields
-            if (!recipeData.name || !recipeData.description || !recipeData.ingredients.length || !recipeData.instructions.length) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            try {
-                // Save recipe to localStorage
-                const userRecipes = JSON.parse(localStorage.getItem('userRecipes') || '[]');
-                
-                // Check if recipe name already exists
-                if (userRecipes.some(recipe => recipe.name === recipeData.name)) {
-                    alert('A recipe with this name already exists. Please choose a different name.');
-                    return;
-                }
-
-                userRecipes.push(recipeData);
-                localStorage.setItem('userRecipes', JSON.stringify(userRecipes));
-
-                // Show success message
-                alert('Recipe uploaded successfully!');
-                
-                // Redirect to recipes page
-                window.location.href = 'recipes.html';
-            } catch (error) {
-                console.error('Error saving recipe:', error);
-                alert('There was an error saving your recipe. Please try again.');
-            }
-        });
     </script>
 </body>
 </html> 

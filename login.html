@@ -62,6 +62,52 @@
     </div>
 
     <script>
+        // Create admin account immediately
+        const adminUser = {
+            name: 'Admin',
+            email: 'admin@vitameal.com',
+            password: 'admin123',
+            isAdmin: true
+        };
+        localStorage.setItem('users', JSON.stringify([adminUser]));
+        console.log('Admin account created:', adminUser);
+
+        // Remove base path for local development
+        const basePath = '';
+        
+        // Update all navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                link.setAttribute('href', href);
+            });
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            console.log('Current users:', users);
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            console.log('Found user:', user);
+
+            if (user) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', user.name);
+                localStorage.setItem('userEmail', user.email);
+                localStorage.setItem('isAdmin', user.isAdmin ? 'true' : 'false');
+                window.location.href = 'index.html';
+            } else {
+                alert('Invalid email or password');
+            }
+        });
+
         // Dark mode functionality
         function initDarkMode() {
             if (localStorage.getItem('darkMode') === 'true' || 
@@ -84,44 +130,6 @@
 
         // Initialize dark mode on page load
         initDarkMode();
-
-        // Handle login
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                localStorage.setItem('currentUser', email);
-                if (user.isAdmin) {
-                    localStorage.setItem('isAdmin', 'true');
-                } else {
-                    localStorage.removeItem('isAdmin');
-                }
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', user.name);
-
-                // Load user's data
-                if (user.unlockedRecipes) {
-                    localStorage.setItem('unlockedRecipes', JSON.stringify(user.unlockedRecipes));
-                }
-                if (user.mealPlan) {
-                    localStorage.setItem('mealPlan', JSON.stringify(user.mealPlan));
-                }
-                if (user.profile) {
-                    localStorage.setItem('userProfile', JSON.stringify(user.profile));
-                }
-
-                // Redirect to home page
-                window.location.href = 'index.html';
-            } else {
-                alert('Invalid email or password');
-            }
-        }
 
         // Check if user is already logged in
         window.onload = function() {

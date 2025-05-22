@@ -96,58 +96,59 @@
         // Initialize dark mode on page load
         initDarkMode();
 
-        // Handle signup
-        function handleSignup(event) {
-            event.preventDefault();
-            
+        // Add base path for GitHub Pages
+        const basePath = '/VitaMeal';
+        
+        // Update all navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                link.setAttribute('href', basePath + '/' + href);
+            });
+        });
+
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Validate passwords match
             if (password !== confirmPassword) {
-                alert('Passwords do not match!');
+                alert('Passwords do not match');
                 return;
             }
 
-            // Get existing users or initialize empty array
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
             // Check if email already exists
             if (users.some(user => user.email === email)) {
-                alert('An account with this email already exists!');
+                alert('Email already registered');
                 return;
             }
 
-            // Create new user
-            const newUser = {
+            // Add new user
+            users.push({
                 name,
                 email,
-                password, // In a real app, this should be hashed
-                unlockedRecipes: [],
-                mealPlan: null,
-                profile: null
-            };
+                password,
+                isAdmin: false
+            });
 
-            // Add user to users array
-            users.push(newUser);
+            // Save users
             localStorage.setItem('users', JSON.stringify(users));
 
-            // Set current user
-            localStorage.setItem('currentUser', email);
+            // Set login status
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
 
             // Redirect to home page
-            window.location.href = 'index.html';
-        }
-
-        // Check if user is already logged in
-        window.onload = function() {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = 'index.html';
-            }
-        }
+            window.location.href = basePath + '/index.html';
+        });
     </script>
 </body>
 </html> 
