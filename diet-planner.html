@@ -42,9 +42,13 @@
                     <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
                     <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
                     <a href="diet-planner.html" class="text-green-600 dark:text-green-400 font-medium">Diet Planner</a>
+                    <span id="welcomeMessage" class="text-gray-700 dark:text-gray-300"></span>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                         <span class="dark:hidden">🌙</span>
                         <span class="hidden dark:inline">☀️</span>
+                    </button>
+                    <button onclick="logout()" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                        Logout
                     </button>
                 </div>
                 <!-- Mobile Menu Button -->
@@ -77,156 +81,109 @@
     <header class="bg-green-500 text-white py-16">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl font-bold mb-4">Diet Planner</h1>
-            <p class="text-xl mb-8">Plan your meals for a healthier lifestyle</p>
+            <p class="text-xl mb-8">Create your personalized meal plan</p>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Diet Planner Section -->
     <div class="container mx-auto px-4 py-12">
-        <!-- User Profile -->
+        <!-- Meal Plan Form -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Your Profile</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Height (cm)</label>
-                    <input type="number" id="height" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="Enter your height">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Create Your Meal Plan</h2>
+            <form id="mealPlanForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Goal</label>
+                        <select class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <option value="weight-loss">Weight Loss</option>
+                            <option value="muscle-gain">Muscle Gain</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="healthy-eating">Healthy Eating</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Activity Level</label>
+                        <select class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <option value="sedentary">Sedentary</option>
+                            <option value="light">Lightly Active</option>
+                            <option value="moderate">Moderately Active</option>
+                            <option value="very">Very Active</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Dietary Preferences</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span class="text-gray-700 dark:text-gray-300">Vegetarian</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span class="text-gray-700 dark:text-gray-300">Vegan</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span class="text-gray-700 dark:text-gray-300">Gluten-Free</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Meals per Day</label>
+                        <select class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <option value="3">3 Meals</option>
+                            <option value="4">4 Meals</option>
+                            <option value="5">5 Meals</option>
+                            <option value="6">6 Meals</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Weight (kg)</label>
-                    <input type="number" id="weight" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="Enter your weight">
-                </div>
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Age</label>
-                    <input type="number" id="age" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="Enter your age">
-                </div>
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Activity Level</label>
-                    <select id="activityLevel" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
-                        <option value="sedentary">Sedentary (Little or no exercise)</option>
-                        <option value="light">Lightly Active (Light exercise 1-3 days/week)</option>
-                        <option value="moderate">Moderately Active (Moderate exercise 3-5 days/week)</option>
-                        <option value="very">Very Active (Hard exercise 6-7 days/week)</option>
-                        <option value="extra">Extra Active (Very hard exercise & physical job)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Gender</label>
-                    <select id="gender" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Goal</label>
-                    <select id="goal" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
-                        <option value="maintain">Maintain Weight</option>
-                        <option value="lose">Lose Weight</option>
-                        <option value="gain">Gain Weight</option>
-                    </select>
-                </div>
-            </div>
-            <button onclick="calculateCalories()" class="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                Calculate Daily Calories
-            </button>
+                <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors">
+                    Generate Meal Plan
+                </button>
+            </form>
         </div>
 
-        <!-- Meal Plan -->
+        <!-- Sample Meal Plan -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Your Meal Plan</h2>
-                <div class="flex space-x-4">
-                    <button onclick="suggestMeals()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        Get Meal Suggestions
-                    </button>
-                    <button onclick="saveMealPlan()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                        Save Meal Plan
-                    </button>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Breakfast -->
-                <div class="meal-card bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Breakfast</h3>
-                        <span class="text-sm text-gray-600 dark:text-gray-300">7:00 - 9:00 AM</span>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Your Meal Plan</h2>
+            <div class="space-y-8">
+                <!-- Monday -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Monday</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Breakfast</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Oatmeal with berries and nuts</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Lunch</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Grilled chicken salad with vegetables</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Dinner</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Baked salmon with quinoa and steamed vegetables</p>
+                        </div>
                     </div>
-                    <div id="breakfastMeals" class="space-y-4">
-                        <p class="text-gray-600 dark:text-gray-300">Add meals from our recipe collection</p>
-                    </div>
-                    <button onclick="addMeal('breakfast')" class="mt-4 text-green-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                        + Add Meal
-                    </button>
                 </div>
 
-                <!-- Lunch -->
-                <div class="meal-card bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Lunch</h3>
-                        <span class="text-sm text-gray-600 dark:text-gray-300">12:00 - 2:00 PM</span>
+                <!-- Tuesday -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Tuesday</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Breakfast</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Greek yogurt with honey and granola</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Lunch</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Vegetable stir-fry with brown rice</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Dinner</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Lean beef with sweet potato and broccoli</p>
+                        </div>
                     </div>
-                    <div id="lunchMeals" class="space-y-4">
-                        <p class="text-gray-600 dark:text-gray-300">Add meals from our recipe collection</p>
-                    </div>
-                    <button onclick="addMeal('lunch')" class="mt-4 text-green-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                        + Add Meal
-                    </button>
                 </div>
-
-                <!-- Dinner -->
-                <div class="meal-card bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Dinner</h3>
-                        <span class="text-sm text-gray-600 dark:text-gray-300">6:00 - 8:00 PM</span>
-                    </div>
-                    <div id="dinnerMeals" class="space-y-4">
-                        <p class="text-gray-600 dark:text-gray-300">Add meals from our recipe collection</p>
-                    </div>
-                    <button onclick="addMeal('dinner')" class="mt-4 text-green-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                        + Add Meal
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nutrition Summary -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-8">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Nutrition Summary</h2>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-                <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300">Daily Calories</p>
-                    <p id="dailyCalories" class="text-2xl font-bold text-green-500">-</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300">Total Calories</p>
-                    <p id="totalCalories" class="text-2xl font-bold text-green-500">0</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300">Remaining Calories</p>
-                    <p id="remainingCalories" class="text-2xl font-bold text-green-500">-</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300">Protein</p>
-                    <p id="protein" class="text-2xl font-bold text-green-500">-</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300">Carbs</p>
-                    <p id="carbs" class="text-2xl font-bold text-green-500">-</p>
-                </div>
-            </div>
-            <!-- Calorie Progress Bar -->
-            <div class="mt-6">
-                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
-                    <span>Daily Calorie Progress</span>
-                    <span id="calorieProgressText">0%</span>
-                </div>
-                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                    <div id="calorieProgress" class="bg-green-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
-            <!-- Nutrition Tips -->
-            <div id="nutritionTips" class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg hidden">
-                <h3 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">Nutrition Tips</h3>
-                <p id="nutritionTipText" class="text-green-700 dark:text-green-300"></p>
             </div>
         </div>
     </div>
@@ -277,306 +234,76 @@
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                link.href = basePath + '/' + link.href;
+            // Update navigation links
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('index.html') || 
+                    href.startsWith('recipes.html') || 
+                    href.startsWith('upload-recipe.html') || 
+                    href.startsWith('games.html') || 
+                    href.startsWith('secret-recipes.html') || 
+                    href.startsWith('diet-planner.html') || 
+                    href.startsWith('login.html') || 
+                    href.startsWith('signup.html')) {
+                    if (!href.includes(basePath)) {
+                        link.href = basePath + '/' + href;
+                    }
+                }
             });
             
-            // Check if user is logged in
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user) {
-                // Redirect to login page with return URL
-                window.location.href = basePath + '/login.html?redirect=diet-planner.html';
-                return;
-            }
-            
             // Initialize dark mode
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const body = document.body;
-            
-            // Check for saved dark mode preference
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
             }
             
             // Toggle dark mode
-            darkModeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'enabled');
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
                 } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'disabled');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
                 }
-            });
+            };
             
             // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const nav = document.querySelector('nav');
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
             
-            mobileMenuBtn.addEventListener('click', function() {
-                nav.classList.toggle('active');
-            });
+            // Check login status
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const welcomeMessage = document.getElementById('welcomeMessage');
             
-            // Update user menu
-            const loginBtn = document.getElementById('loginBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
-            
-            loginBtn.style.display = 'none';
-            signupBtn.style.display = 'none';
-            userMenu.style.display = 'block';
-            userName.textContent = user.name;
+            if (user) {
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = `Welcome, ${user.name}!`;
+                }
+            } else {
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = '';
+                }
+            }
             
             // Logout functionality
-            document.getElementById('logoutBtn').addEventListener('click', function() {
+            window.logout = function() {
                 localStorage.removeItem('currentUser');
                 window.location.href = basePath + '/login.html';
-            });
-        });
-
-        // Dark mode functionality
-        function initDarkMode() {
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            }
-        }
-
-        // Initialize dark mode on page load
-        initDarkMode();
-
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Check login status
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            if (!isLoggedIn) {
-                window.location.href = 'login.html';
-            }
-        }
-
-        // Function to calculate daily calories
-        function calculateDailyCalories() {
-            const age = parseInt(document.getElementById('age').value) || 0;
-            const weight = parseFloat(document.getElementById('weight').value) || 0;
-            const height = parseFloat(document.getElementById('height').value) || 0;
-            const gender = document.getElementById('gender').value;
-            const activityLevel = document.getElementById('activityLevel').value;
-        
-            // BMR calculation using Mifflin-St Jeor Equation
-            let bmr;
-            if (gender === 'male') {
-                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-            } else {
-                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-            }
-        
-            // Activity level multiplier
-            const activityMultipliers = {
-                'sedentary': 1.2,
-                'light': 1.375,
-                'moderate': 1.55,
-                'active': 1.725,
-                'veryActive': 1.9
             };
-        
-            const dailyCalories = Math.round(bmr * activityMultipliers[activityLevel]);
-            document.getElementById('calorieResult').textContent = `${dailyCalories} calories/day`;
-        
-            // Update progress bar
-            const progressBar = document.getElementById('calorieProgress');
-            const progressText = document.getElementById('calorieProgressText');
-            const progress = Math.min((dailyCalories / 3000) * 100, 100);
-            progressBar.style.width = `${progress}%`;
-            progressText.textContent = `${Math.round(progress)}%`;
-        
-            // Show nutrition tips
-            const tipsContainer = document.getElementById('nutritionTips');
-            const tipText = document.getElementById('nutritionTipText');
-            tipsContainer.classList.remove('hidden');
-            
-            // Provide meal suggestions based on calorie needs
-            suggestMeals(dailyCalories);
-        }
-        
-        // Function to suggest meals
-        function suggestMeals(dailyCalories) {
-            const mealSuggestions = document.getElementById('mealSuggestions');
-            mealSuggestions.innerHTML = ''; // Clear previous suggestions
-        
-            const breakfast = Math.round(dailyCalories * 0.3);
-            const lunch = Math.round(dailyCalories * 0.35);
-            const dinner = Math.round(dailyCalories * 0.25);
-            const snacks = Math.round(dailyCalories * 0.1);
-        
-            const suggestions = {
-                breakfast: getSuggestedMeal('breakfast', breakfast),
-                lunch: getSuggestedMeal('lunch', lunch),
-                dinner: getSuggestedMeal('dinner', dinner),
-                snacks: getSuggestedMeal('snacks', snacks)
-            };
-        
-            // Create meal cards
-            Object.entries(suggestions).forEach(([mealType, suggestion]) => {
-                const card = document.createElement('div');
-                card.className = 'meal-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg';
-                card.innerHTML = `
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2 capitalize">${mealType}</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2">${suggestion.calories} calories</p>
-                    <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
-                        ${suggestion.items.map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                `;
-                mealSuggestions.appendChild(card);
-            });
-        }
-        
-        // Helper function to get meal suggestions based on type and calories
-        function getSuggestedMeal(type, calories) {
-            const suggestions = {
-                breakfast: {
-                    low: ['Oatmeal with berries', 'Greek yogurt', 'Banana'],
-                    medium: ['Whole grain toast with avocado', 'Scrambled eggs', 'Orange juice'],
-                    high: ['Protein smoothie', 'Whole grain pancakes', 'Mixed fruit bowl']
-                },
-                lunch: {
-                    low: ['Grilled chicken salad', 'Quinoa', 'Steamed vegetables'],
-                    medium: ['Turkey sandwich', 'Mixed green salad', 'Apple'],
-                    high: ['Salmon with brown rice', 'Roasted vegetables', 'Hummus']
-                },
-                dinner: {
-                    low: ['Baked fish', 'Steamed broccoli', 'Sweet potato'],
-                    medium: ['Lean beef stir-fry', 'Brown rice', 'Mixed vegetables'],
-                    high: ['Grilled chicken breast', 'Quinoa', 'Asparagus', 'Olive oil']
-                },
-                snacks: {
-                    low: ['Apple slices', 'Almonds'],
-                    medium: ['Greek yogurt', 'Mixed berries', 'Honey'],
-                    high: ['Protein bar', 'Mixed nuts', 'Dried fruits']
-                }
-            };
-        
-            let category;
-            if (calories < 400) category = 'low';
-            else if (calories < 600) category = 'medium';
-            else category = 'high';
-        
-            return {
-                calories: calories,
-                items: suggestions[type][category]
-            };
-        }
 
-        // Update meal calories
-        function updateMealCalories(selectElement) {
-            const calories = selectElement.options[selectElement.selectedIndex].dataset.calories || 0;
-            const caloriesElement = selectElement.parentElement.querySelector('.meal-calories');
-            caloriesElement.textContent = calories;
-            updateTotalCalories();
-        }
-
-        // Update total calories
-        function updateTotalCalories() {
-            const mealCalories = Array.from(document.querySelectorAll('.meal-calories'))
-                .reduce((total, element) => total + parseInt(element.textContent || 0), 0);
-            
-            const dailyCalories = parseInt(document.getElementById('dailyCalories').textContent) || 0;
-            const remainingCalories = dailyCalories - mealCalories;
-
-            document.getElementById('totalCalories').textContent = mealCalories;
-            document.getElementById('remainingCalories').textContent = remainingCalories;
-
-            // Update progress bar
-            const progress = (mealCalories / dailyCalories) * 100;
-            const progressBar = document.getElementById('calorieProgress');
-            const progressText = document.getElementById('calorieProgressText');
-            
-            progressBar.style.width = `${Math.min(progress, 100)}%`;
-            progressText.textContent = `${Math.round(progress)}%`;
-
-            // Change color based on progress
-            if (progress > 100) {
-                progressBar.classList.remove('bg-green-500');
-                progressBar.classList.add('bg-red-500');
-            } else if (progress > 80) {
-                progressBar.classList.remove('bg-green-500');
-                progressBar.classList.add('bg-yellow-500');
-            } else {
-                progressBar.classList.remove('bg-red-500', 'bg-yellow-500');
-                progressBar.classList.add('bg-green-500');
-            }
-        }
-
-        // Load saved profile
-        function loadProfile() {
-            const savedProfile = localStorage.getItem('userProfile');
-            if (savedProfile) {
-                const profile = JSON.parse(savedProfile);
-                document.getElementById('height').value = profile.height;
-                document.getElementById('weight').value = profile.weight;
-                document.getElementById('age').value = profile.age;
-                document.getElementById('activityLevel').value = profile.activityLevel;
-                document.getElementById('gender').value = profile.gender;
-                document.getElementById('goal').value = profile.goal;
-                calculateCalories();
-            }
-        }
-
-        // Load meal plan from localStorage
-        function loadMealPlan() {
-            const savedMealPlan = localStorage.getItem('mealPlan');
-            if (savedMealPlan) {
-                const mealPlan = JSON.parse(savedMealPlan);
-                document.getElementById('breakfastMeals').innerHTML = mealPlan.breakfast;
-                document.getElementById('lunchMeals').innerHTML = mealPlan.lunch;
-                document.getElementById('dinnerMeals').innerHTML = mealPlan.dinner;
-                
-                // Reattach event listeners to all meal selects
-                document.querySelectorAll('select').forEach(select => {
-                    select.addEventListener('change', function() {
-                        updateMealCalories(this);
-                    });
+            // Handle meal plan form submission
+            const mealPlanForm = document.getElementById('mealPlanForm');
+            if (mealPlanForm) {
+                mealPlanForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Here you would typically make an API call to generate a meal plan
+                    // For now, we'll just show an alert
+                    alert('Meal plan generation is coming soon!');
                 });
-                
-                updateTotalCalories();
             }
-        }
-
-        // Save meal plan to localStorage
-        function saveMealPlan() {
-            const mealPlan = {
-                breakfast: document.getElementById('breakfastMeals').innerHTML,
-                lunch: document.getElementById('lunchMeals').innerHTML,
-                dinner: document.getElementById('dinnerMeals').innerHTML
-            };
-            localStorage.setItem('mealPlan', JSON.stringify(mealPlan));
-            alert('Meal plan saved successfully!');
-        }
-
-        // Initialize page
-        window.onload = function() {
-            checkLoginStatus();
-            loadProfile();
-            loadMealPlan();
-        }
+        });
     </script>
 </body>
 </html>
