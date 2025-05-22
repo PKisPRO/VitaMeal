@@ -65,34 +65,41 @@
         // Set base path for GitHub Pages
         const basePath = '/VitaMeal';
         
-        // Create admin account
+        // Create admin account if it doesn't exist
         const adminAccount = {
             name: 'Admin',
             email: 'admin@vitameal.com',
             password: 'admin123'
         };
         
-        // Store admin account in localStorage
-        localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
+        // Store admin account in localStorage if it doesn't exist
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        if (!users.some(user => user.email === adminAccount.email)) {
+            users.push(adminAccount);
+            localStorage.setItem('users', JSON.stringify(users));
+        }
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
                 link.href = basePath + '/' + link.href;
             });
             
             // Handle login form submission
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 
-                // Check if it's admin login
-                const adminAccount = JSON.parse(localStorage.getItem('adminAccount'));
+                // Check for admin login
                 if (email === adminAccount.email && password === adminAccount.password) {
                     localStorage.setItem('currentUser', JSON.stringify(adminAccount));
-                    window.location.href = basePath + '/index.html';
+                    // Get the redirect URL from the URL parameters or default to index
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectUrl = urlParams.get('redirect') || 'index.html';
+                    window.location.href = basePath + '/' + redirectUrl;
                     return;
                 }
                 
@@ -102,7 +109,10 @@
                 
                 if (user) {
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    window.location.href = basePath + '/index.html';
+                    // Get the redirect URL from the URL parameters or default to index
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectUrl = urlParams.get('redirect') || 'index.html';
+                    window.location.href = basePath + '/' + redirectUrl;
                 } else {
                     alert('Invalid email or password');
                 }
