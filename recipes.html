@@ -359,67 +359,111 @@
     </footer>
 
     <script>
-        // Remove base path for local development
-        const basePath = '';
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                link.setAttribute('href', href);
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                link.href = basePath + '/' + link.href;
+            });
+            
+            // Load user recipes
+            loadUserRecipes();
+            
+            // Initialize dark mode
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+            
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
+            });
+            
+            // Recipe filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    filterRecipes(category);
+                });
             });
         });
-
-        // Load user recipes
+        
         function loadUserRecipes() {
-            const recipesContainer = document.getElementById('userRecipes');
-            const recipes = JSON.parse(localStorage.getItem('userRecipes')) || [];
+            const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+            const recipesContainer = document.getElementById('recipesContainer');
             
             if (recipes.length === 0) {
-                recipesContainer.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">No recipes available yet. Be the first to share a recipe!</p>';
+                recipesContainer.innerHTML = '<p class="no-recipes">No recipes available yet. Be the first to share your recipe!</p>';
                 return;
             }
-
+            
             recipesContainer.innerHTML = '';
-            recipes.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(recipe => {
+            
+            // Sort recipes by date (newest first)
+            recipes.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            recipes.forEach(recipe => {
                 const recipeCard = document.createElement('div');
-                recipeCard.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden';
+                recipeCard.className = 'recipe-card';
+                
+                const likes = recipe.likes || 0;
+                const likedBy = recipe.likedBy || [];
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const isLiked = currentUser && likedBy.includes(currentUser.email);
+                
                 recipeCard.innerHTML = `
-                    <img src="${recipe.image || 'images/placeholder.jpg'}" alt="${recipe.name}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">${recipe.name}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">${recipe.description}</p>
-                        <div class="flex justify-between items-center">
-                            <div class="text-sm text-gray-500 dark:text-gray-400">
-                                <span>Prep: ${recipe.prepTime} mins</span>
-                                <span class="mx-2">|</span>
-                                <span>Servings: ${recipe.servings}</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button onclick="likeRecipe('${recipe.name}')" class="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400">
-                                    <span class="likes-count">${recipe.likes || 0}</span> ❤️
-                                </button>
-                                <a href="user-recipe.html?name=${encodeURIComponent(recipe.name)}" class="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
-                                    View Recipe
-                                </a>
-                            </div>
+                    <img src="${recipe.image}" alt="${recipe.name}">
+                    <div class="recipe-content">
+                        <h3>${recipe.name}</h3>
+                        <p>${recipe.description}</p>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> ${recipe.prepTime} mins</span>
+                            <span><i class="fas fa-fire"></i> ${recipe.cookTime} mins</span>
+                            <span><i class="fas fa-users"></i> ${recipe.servings} servings</span>
+                        </div>
+                        <div class="recipe-actions">
+                            <button onclick="likeRecipe('${recipe.name}')" class="like-btn ${isLiked ? 'liked' : ''}">
+                                <i class="fas fa-heart"></i> ${likes}
+                            </button>
+                            <button onclick="window.location.href='${basePath}/recipe-detail.html?name=${encodeURIComponent(recipe.name)}'" class="view-btn">
+                                View Recipe
+                            </button>
                         </div>
                     </div>
                 `;
+                
                 recipesContainer.appendChild(recipeCard);
             });
         }
-
-        // Like recipe function
+        
         function likeRecipe(recipeName) {
-            const currentUser = localStorage.getItem('userEmail');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUser) {
                 alert('Please log in to like recipes');
                 return;
             }
-
-            const recipes = JSON.parse(localStorage.getItem('userRecipes')) || [];
+            
+            const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
             const recipe = recipes.find(r => r.name === recipeName);
             
             if (recipe) {
@@ -427,69 +471,71 @@
                     recipe.likedBy = [];
                 }
                 
-                const userIndex = recipe.likedBy.indexOf(currentUser);
+                const userIndex = recipe.likedBy.indexOf(currentUser.email);
                 if (userIndex === -1) {
-                    recipe.likedBy.push(currentUser);
+                    recipe.likedBy.push(currentUser.email);
                     recipe.likes = (recipe.likes || 0) + 1;
                 } else {
                     recipe.likedBy.splice(userIndex, 1);
                     recipe.likes = (recipe.likes || 0) - 1;
                 }
                 
-                localStorage.setItem('userRecipes', JSON.stringify(recipes));
+                localStorage.setItem('recipes', JSON.stringify(recipes));
                 loadUserRecipes();
             }
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserRecipes();
-        });
-
-        // Dark mode functionality
-        function initDarkMode() {
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            }
-        }
-
-        // Initialize dark mode on page load
-        initDarkMode();
-
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Recipe filtering functionality
-        const categoryFilter = document.getElementById('categoryFilter');
-        const recipeCards = document.querySelectorAll('.recipe-card');
-
-        categoryFilter.addEventListener('change', function() {
-            const selectedCategory = this.value;
+        
+        function filterRecipes(category) {
+            const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+            const recipesContainer = document.getElementById('recipesContainer');
             
-            recipeCards.forEach(card => {
-                if (selectedCategory === 'all' || card.dataset.category.includes(selectedCategory)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+            if (category === 'all') {
+                loadUserRecipes();
+                return;
+            }
+            
+            const filteredRecipes = recipes.filter(recipe => recipe.category === category);
+            
+            if (filteredRecipes.length === 0) {
+                recipesContainer.innerHTML = `<p class="no-recipes">No ${category} recipes available yet.</p>`;
+                return;
+            }
+            
+            recipesContainer.innerHTML = '';
+            
+            filteredRecipes.forEach(recipe => {
+                const recipeCard = document.createElement('div');
+                recipeCard.className = 'recipe-card';
+                
+                const likes = recipe.likes || 0;
+                const likedBy = recipe.likedBy || [];
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const isLiked = currentUser && likedBy.includes(currentUser.email);
+                
+                recipeCard.innerHTML = `
+                    <img src="${recipe.image}" alt="${recipe.name}">
+                    <div class="recipe-content">
+                        <h3>${recipe.name}</h3>
+                        <p>${recipe.description}</p>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> ${recipe.prepTime} mins</span>
+                            <span><i class="fas fa-fire"></i> ${recipe.cookTime} mins</span>
+                            <span><i class="fas fa-users"></i> ${recipe.servings} servings</span>
+                        </div>
+                        <div class="recipe-actions">
+                            <button onclick="likeRecipe('${recipe.name}')" class="like-btn ${isLiked ? 'liked' : ''}">
+                                <i class="fas fa-heart"></i> ${likes}
+                            </button>
+                            <button onclick="window.location.href='${basePath}/recipe-detail.html?name=${encodeURIComponent(recipe.name)}'" class="view-btn">
+                                View Recipe
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                recipesContainer.appendChild(recipeCard);
             });
-        });
+        }
     </script>
 </body>
 </html> 

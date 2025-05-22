@@ -62,50 +62,51 @@
     </div>
 
     <script>
-        // Create admin account immediately
-        const adminUser = {
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
+        
+        // Create admin account
+        const adminAccount = {
             name: 'Admin',
             email: 'admin@vitameal.com',
-            password: 'admin123',
-            isAdmin: true
+            password: 'admin123'
         };
-        localStorage.setItem('users', JSON.stringify([adminUser]));
-        console.log('Admin account created:', adminUser);
-
-        // Remove base path for local development
-        const basePath = '';
+        
+        // Store admin account in localStorage
+        localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                link.setAttribute('href', href);
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                link.href = basePath + '/' + link.href;
             });
-        });
-
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Get users from localStorage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            console.log('Current users:', users);
             
-            const user = users.find(u => u.email === email && u.password === password);
-            console.log('Found user:', user);
-
-            if (user) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', user.name);
-                localStorage.setItem('userEmail', user.email);
-                localStorage.setItem('isAdmin', user.isAdmin ? 'true' : 'false');
-                window.location.href = 'index.html';
-            } else {
-                alert('Invalid email or password');
-            }
+            // Handle login form submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Check if it's admin login
+                const adminAccount = JSON.parse(localStorage.getItem('adminAccount'));
+                if (email === adminAccount.email && password === adminAccount.password) {
+                    localStorage.setItem('currentUser', JSON.stringify(adminAccount));
+                    window.location.href = basePath + '/index.html';
+                    return;
+                }
+                
+                // Check regular user login
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    window.location.href = basePath + '/index.html';
+                } else {
+                    alert('Invalid email or password');
+                }
+            });
         });
 
         // Dark mode functionality

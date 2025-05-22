@@ -187,73 +187,69 @@
     </footer>
 
     <script>
-        // Remove base path for local development
-        const basePath = '';
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                link.setAttribute('href', href);
+            // Update navigation links
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                link.href = basePath + '/' + link.href;
+            });
+            
+            // Initialize dark mode
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+            
+            // Toggle dark mode
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
+            });
+            
+            // Check login status
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            
+            if (user) {
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                userMenu.style.display = 'block';
+                userName.textContent = user.name;
+            } else {
+                loginBtn.style.display = 'block';
+                signupBtn.style.display = 'block';
+                userMenu.style.display = 'none';
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = basePath + '/login.html';
             });
         });
-
-        // Dark mode functionality
-        function initDarkMode() {
-            // Check for saved theme preference or use system preference
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            }
-        }
-
-        // Initialize dark mode on page load
-        initDarkMode();
-
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Check login status and show welcome message
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const userName = localStorage.getItem('userName');
-            
-            if (!isLoggedIn) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const welcomeMessage = document.getElementById('welcomeMessage');
-            welcomeMessage.textContent = `Welcome, ${userName}!`;
-        }
-
-        // Logout functionality
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('isAdmin');
-            window.location.href = 'login.html';
-        }
-
-        // Check login status when page loads
-        window.onload = checkLoginStatus;
     </script>
 </body>
 </html> 

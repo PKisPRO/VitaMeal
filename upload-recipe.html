@@ -252,115 +252,101 @@
     </footer>
 
     <script>
-        // Remove base path for local development
-        const basePath = '';
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]');
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                link.setAttribute('href', href);
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                link.href = basePath + '/' + link.href;
+            });
+            
+            // Handle form submission
+            document.getElementById('recipeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) {
+                    alert('Please log in to upload a recipe');
+                    window.location.href = basePath + '/login.html';
+                    return;
+                }
+                
+                const imageFile = document.getElementById('recipeImage').files[0];
+                if (!imageFile) {
+                    alert('Please select an image');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const recipe = {
+                        name: document.getElementById('recipeName').value,
+                        description: document.getElementById('recipeDescription').value,
+                        prepTime: parseInt(document.getElementById('prepTime').value),
+                        cookTime: parseInt(document.getElementById('cookTime').value),
+                        servings: parseInt(document.getElementById('servings').value),
+                        ingredients: Array.from(document.querySelectorAll('input[name="ingredients[]"]')).map(input => input.value.trim()),
+                        instructions: Array.from(document.querySelectorAll('textarea[name="instructions[]"]')).map(textarea => textarea.value.trim()),
+                        nutrition: {
+                            calories: parseInt(document.getElementById('calories').value),
+                            protein: parseInt(document.getElementById('protein').value),
+                            carbs: parseInt(document.getElementById('carbs').value),
+                            fiber: parseInt(document.getElementById('fiber').value)
+                        },
+                        image: e.target.result,
+                        author: currentUser.name,
+                        authorEmail: currentUser.email,
+                        date: new Date().toISOString(),
+                        likes: 0,
+                        likedBy: [],
+                        comments: []
+                    };
+                    
+                    const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+                    
+                    if (recipes.some(r => r.name === recipe.name)) {
+                        alert('A recipe with this name already exists');
+                        return;
+                    }
+                    
+                    recipes.push(recipe);
+                    localStorage.setItem('recipes', JSON.stringify(recipes));
+                    
+                    window.location.href = basePath + '/recipes.html';
+                };
+                
+                reader.readAsDataURL(imageFile);
+            });
+            
+            // Initialize dark mode
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+            
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
             });
         });
-
-        // Handle form submission
-        document.getElementById('recipeForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const currentUser = localStorage.getItem('userEmail');
-            if (!currentUser) {
-                alert('Please log in to upload a recipe');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const imageFile = document.getElementById('recipeImage').files[0];
-            let imageBase64 = '';
-            
-            if (imageFile) {
-                imageBase64 = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.readAsDataURL(imageFile);
-                });
-            }
-
-            const recipeData = {
-                name: document.getElementById('recipeName').value,
-                description: document.getElementById('recipeDescription').value,
-                prepTime: parseInt(document.getElementById('prepTime').value),
-                cookTime: parseInt(document.getElementById('cookTime').value),
-                servings: parseInt(document.getElementById('servings').value),
-                ingredients: Array.from(document.querySelectorAll('input[name="ingredients[]"]')).map(input => input.value.trim()),
-                instructions: Array.from(document.querySelectorAll('textarea[name="instructions[]"]')).map(textarea => textarea.value.trim()),
-                nutrition: {
-                    calories: parseInt(document.getElementById('calories').value),
-                    protein: parseInt(document.getElementById('protein').value),
-                    carbs: parseInt(document.getElementById('carbs').value),
-                    fiber: parseInt(document.getElementById('fiber').value)
-                },
-                image: imageBase64,
-                author: currentUser,
-                date: new Date().toISOString(),
-                likes: 0,
-                likedBy: [],
-                comments: []
-            };
-
-            // Validate required fields
-            if (!recipeData.name || !recipeData.description || !recipeData.ingredients.length || !recipeData.instructions.length) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            // Get existing recipes
-            const recipes = JSON.parse(localStorage.getItem('userRecipes')) || [];
-            
-            // Check for duplicate recipe name
-            if (recipes.some(r => r.name === recipeData.name)) {
-                alert('A recipe with this name already exists');
-                return;
-            }
-
-            // Add new recipe
-            recipes.push(recipeData);
-            localStorage.setItem('userRecipes', JSON.stringify(recipes));
-
-            alert('Recipe uploaded successfully!');
-            window.location.href = 'recipes.html';
-        });
-
-        // Dark mode functionality
-        function initDarkMode() {
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            }
-        }
-
-        // Initialize dark mode on page load
-        initDarkMode();
-
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Add ingredient field
+        
         function addIngredient() {
             const ingredientsList = document.getElementById('ingredientsList');
             const newIngredient = document.createElement('div');
@@ -377,13 +363,11 @@
             `;
             ingredientsList.appendChild(newIngredient);
         }
-
-        // Remove ingredient field
+        
         function removeIngredient(button) {
             button.parentElement.remove();
         }
-
-        // Add instruction field
+        
         function addInstruction() {
             const instructionsList = document.getElementById('instructionsList');
             const newInstruction = document.createElement('div');
@@ -400,8 +384,7 @@
             `;
             instructionsList.appendChild(newInstruction);
         }
-
-        // Remove instruction field
+        
         function removeInstruction(button) {
             button.parentElement.remove();
         }
