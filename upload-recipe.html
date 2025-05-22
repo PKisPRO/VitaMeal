@@ -257,93 +257,75 @@
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                link.href = basePath + '/' + link.href;
-            });
-            
-            // Handle form submission
-            document.getElementById('recipeForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                if (!currentUser) {
-                    alert('Please log in to upload a recipe');
-                    window.location.href = basePath + '/login.html';
-                    return;
+            // Update navigation links
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                if (!link.href.includes(basePath)) {
+                    link.href = basePath + '/' + link.href;
                 }
-                
-                const imageFile = document.getElementById('recipeImage').files[0];
-                if (!imageFile) {
-                    alert('Please select an image');
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const recipe = {
-                        name: document.getElementById('recipeName').value,
-                        description: document.getElementById('recipeDescription').value,
-                        prepTime: parseInt(document.getElementById('prepTime').value),
-                        cookTime: parseInt(document.getElementById('cookTime').value),
-                        servings: parseInt(document.getElementById('servings').value),
-                        ingredients: Array.from(document.querySelectorAll('input[name="ingredients[]"]')).map(input => input.value.trim()),
-                        instructions: Array.from(document.querySelectorAll('textarea[name="instructions[]"]')).map(textarea => textarea.value.trim()),
-                        nutrition: {
-                            calories: parseInt(document.getElementById('calories').value),
-                            protein: parseInt(document.getElementById('protein').value),
-                            carbs: parseInt(document.getElementById('carbs').value),
-                            fiber: parseInt(document.getElementById('fiber').value)
-                        },
-                        image: e.target.result,
-                        author: currentUser.name,
-                        authorEmail: currentUser.email,
-                        date: new Date().toISOString(),
-                        likes: 0,
-                        likedBy: [],
-                        comments: []
-                    };
-                    
-                    const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
-                    
-                    if (recipes.some(r => r.name === recipe.name)) {
-                        alert('A recipe with this name already exists');
-                        return;
-                    }
-                    
-                    recipes.push(recipe);
-                    localStorage.setItem('recipes', JSON.stringify(recipes));
-                    
-                    window.location.href = basePath + '/recipes.html';
-                };
-                
-                reader.readAsDataURL(imageFile);
             });
             
             // Initialize dark mode
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const body = document.body;
-            
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
             }
             
-            darkModeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'enabled');
+            // Toggle dark mode
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
                 } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'disabled');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
                 }
-            });
+            };
             
             // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const nav = document.querySelector('nav');
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
             
-            mobileMenuBtn.addEventListener('click', function() {
-                nav.classList.toggle('active');
+            // Check login status
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                window.location.href = basePath + '/login.html?redirect=upload-recipe.html';
+                return;
+            }
+            
+            // Handle form submission
+            const form = document.getElementById('recipeForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(form);
+                const recipe = {
+                    name: formData.get('name'),
+                    description: formData.get('description'),
+                    prepTime: formData.get('prepTime'),
+                    cookTime: formData.get('cookTime'),
+                    servings: formData.get('servings'),
+                    ingredients: formData.get('ingredients').split('\n').filter(i => i.trim()),
+                    instructions: formData.get('instructions').split('\n').filter(i => i.trim()),
+                    nutrition: {
+                        calories: formData.get('calories'),
+                        protein: formData.get('protein'),
+                        carbs: formData.get('carbs'),
+                        fat: formData.get('fat')
+                    },
+                    image: formData.get('image'),
+                    author: user.name,
+                    date: new Date().toISOString()
+                };
+                
+                // Save recipe
+                const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+                recipes.push(recipe);
+                localStorage.setItem('recipes', JSON.stringify(recipes));
+                
+                // Redirect to recipes page
+                window.location.href = basePath + '/recipes.html';
             });
         });
         

@@ -364,39 +364,61 @@
         
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                link.href = basePath + '/' + link.href;
-            });
-            
-            // Load user recipes
-            loadUserRecipes();
-            
-            // Initialize dark mode
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const body = document.body;
-            
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            }
-            
-            darkModeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'enabled');
-                } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'disabled');
+            // Update navigation links
+            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
+                if (!link.href.includes(basePath)) {
+                    link.href = basePath + '/' + link.href;
                 }
             });
             
-            // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const nav = document.querySelector('nav');
+            // Initialize dark mode
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+            }
             
-            mobileMenuBtn.addEventListener('click', function() {
-                nav.classList.toggle('active');
-            });
+            // Toggle dark mode
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                }
+            };
+            
+            // Mobile menu toggle
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
+            
+            // Check login status
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            
+            if (user) {
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                userMenu.style.display = 'block';
+                userName.textContent = user.name;
+            } else {
+                loginBtn.style.display = 'block';
+                signupBtn.style.display = 'block';
+                userMenu.style.display = 'none';
+            }
+            
+            // Logout functionality
+            window.logout = function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = basePath + '/login.html';
+            };
+            
+            // Load user recipes
+            loadUserRecipes();
             
             // Recipe filtering
             const filterButtons = document.querySelectorAll('.filter-btn');
