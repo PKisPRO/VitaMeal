@@ -82,7 +82,9 @@
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                link.href = basePath + '/' + link.href;
+                if (!link.href.includes(basePath)) {
+                    link.href = basePath + '/' + link.href;
+                }
             });
             
             // Handle login form submission
@@ -144,8 +146,11 @@
 
         // Check if user is already logged in
         window.onload = function() {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = 'index.html';
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect') || 'index.html';
+                window.location.href = basePath + '/' + redirectUrl;
             }
         }
     </script>
