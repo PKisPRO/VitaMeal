@@ -126,44 +126,43 @@
                     window.location.href = basePath + '/index.html';
                 }
             }
-            
-            // Handle login form submission
-            const loginForm = document.getElementById('loginForm');
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Check admin credentials
-                if (email === adminAccount.email && password === adminAccount.password) {
-                    localStorage.setItem('currentUser', JSON.stringify(adminAccount));
-                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-                    if (redirectUrl) {
-                        window.location.href = basePath + '/' + redirectUrl;
-                    } else {
-                        window.location.href = basePath + '/index.html';
-                    }
-                    return;
-                }
-                
-                // Check regular user credentials
-                const users = JSON.parse(localStorage.getItem('users')) || [];
-                const user = users.find(u => u.email === email && u.password === password);
-                
-                if (user) {
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-                    if (redirectUrl) {
-                        window.location.href = basePath + '/' + redirectUrl;
-                    } else {
-                        window.location.href = basePath + '/index.html';
-                    }
-                } else {
-                    alert('Invalid email or password');
-                }
-            });
         });
+        
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check admin credentials
+            if (email === adminAccount.email && password === adminAccount.password) {
+                localStorage.setItem('currentUser', JSON.stringify(adminAccount));
+                const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                if (redirectUrl) {
+                    window.location.href = basePath + '/' + redirectUrl;
+                } else {
+                    window.location.href = basePath + '/index.html';
+                }
+                return;
+            }
+            
+            // Check regular user credentials
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                if (redirectUrl) {
+                    window.location.href = basePath + '/' + redirectUrl;
+                } else {
+                    window.location.href = basePath + '/index.html';
+                }
+            } else {
+                alert('Invalid email or password');
+            }
+        }
     </script>
 </body>
 </html> 

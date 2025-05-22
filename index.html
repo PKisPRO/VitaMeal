@@ -233,20 +233,16 @@
             
             // Check login status
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            const loginBtn = document.getElementById('loginBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
+            const welcomeMessage = document.getElementById('welcomeMessage');
             
             if (user) {
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (signupBtn) signupBtn.style.display = 'none';
-                if (userMenu) userMenu.style.display = 'block';
-                if (userName) userName.textContent = user.name;
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = `Welcome, ${user.name}!`;
+                }
             } else {
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (signupBtn) signupBtn.style.display = 'block';
-                if (userMenu) userMenu.style.display = 'none';
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = '';
+                }
             }
             
             // Logout functionality
