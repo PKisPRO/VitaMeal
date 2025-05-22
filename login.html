@@ -72,20 +72,60 @@
             password: 'admin123'
         };
         
-        // Store admin account in localStorage if it doesn't exist
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        if (!users.some(user => user.email === adminAccount.email)) {
-            users.push(adminAccount);
-            localStorage.setItem('users', JSON.stringify(users));
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([adminAccount]));
         }
         
-        // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                if (!link.href.includes(basePath)) {
-                    link.href = basePath + '/' + link.href;
+            // Update navigation links
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('index.html') || 
+                    href.startsWith('recipes.html') || 
+                    href.startsWith('upload-recipe.html') || 
+                    href.startsWith('games.html') || 
+                    href.startsWith('secret-recipes.html') || 
+                    href.startsWith('diet-planner.html') || 
+                    href.startsWith('login.html') || 
+                    href.startsWith('signup.html')) {
+                    if (!href.includes(basePath)) {
+                        link.href = basePath + '/' + href;
+                    }
                 }
             });
+            
+            // Initialize dark mode
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // Toggle dark mode
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                }
+            };
+            
+            // Mobile menu toggle
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
+            
+            // Check if user is already logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                if (redirectUrl) {
+                    window.location.href = basePath + '/' + redirectUrl;
+                } else {
+                    window.location.href = basePath + '/index.html';
+                }
+            }
             
             // Handle login form submission
             const loginForm = document.getElementById('loginForm');
@@ -95,59 +135,35 @@
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 
-                // Check for admin login
+                // Check admin credentials
                 if (email === adminAccount.email && password === adminAccount.password) {
                     localStorage.setItem('currentUser', JSON.stringify(adminAccount));
-                    // Get the redirect URL from the URL parameters or default to index
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const redirectUrl = urlParams.get('redirect') || 'index.html';
-                    window.location.href = basePath + '/' + redirectUrl;
+                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                    if (redirectUrl) {
+                        window.location.href = basePath + '/' + redirectUrl;
+                    } else {
+                        window.location.href = basePath + '/index.html';
+                    }
                     return;
                 }
                 
-                // Check regular user login
+                // Check regular user credentials
                 const users = JSON.parse(localStorage.getItem('users')) || [];
                 const user = users.find(u => u.email === email && u.password === password);
                 
                 if (user) {
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    // Get the redirect URL from the URL parameters or default to index
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const redirectUrl = urlParams.get('redirect') || 'index.html';
-                    window.location.href = basePath + '/' + redirectUrl;
+                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                    if (redirectUrl) {
+                        window.location.href = basePath + '/' + redirectUrl;
+                    } else {
+                        window.location.href = basePath + '/index.html';
+                    }
                 } else {
                     alert('Invalid email or password');
                 }
             });
         });
-
-        // Dark mode functionality
-        window.toggleDarkMode = function() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            }
-        };
-
-        // Initialize dark mode on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.documentElement.classList.add('dark');
-            }
-        });
-
-        // Check if user is already logged in
-        window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (user) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const redirectUrl = urlParams.get('redirect') || 'index.html';
-                window.location.href = basePath + '/' + redirectUrl;
-            }
-        }
     </script>
 </body>
 </html> 

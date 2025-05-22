@@ -193,17 +193,23 @@
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
             // Update navigation links
-            document.querySelectorAll('a[href^="index.html"], a[href^="recipes.html"], a[href^="upload-recipe.html"], a[href^="games.html"], a[href^="secret-recipes.html"], a[href^="diet-planner.html"], a[href^="login.html"], a[href^="signup.html"]').forEach(link => {
-                if (!link.href.includes(basePath)) {
-                    link.href = basePath + '/' + link.href;
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('index.html') || 
+                    href.startsWith('recipes.html') || 
+                    href.startsWith('upload-recipe.html') || 
+                    href.startsWith('games.html') || 
+                    href.startsWith('secret-recipes.html') || 
+                    href.startsWith('diet-planner.html') || 
+                    href.startsWith('login.html') || 
+                    href.startsWith('signup.html')) {
+                    if (!href.includes(basePath)) {
+                        link.href = basePath + '/' + href;
+                    }
                 }
             });
             
             // Initialize dark mode
-            const darkModeToggle = document.querySelector('button[onclick="toggleDarkMode()"]');
-            const body = document.body;
-            
-            // Check for saved dark mode preference
             if (localStorage.getItem('darkMode') === 'true') {
                 document.documentElement.classList.add('dark');
             }
@@ -233,14 +239,14 @@
             const userName = document.getElementById('userName');
             
             if (user) {
-                loginBtn.style.display = 'none';
-                signupBtn.style.display = 'none';
-                userMenu.style.display = 'block';
-                userName.textContent = user.name;
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (signupBtn) signupBtn.style.display = 'none';
+                if (userMenu) userMenu.style.display = 'block';
+                if (userName) userName.textContent = user.name;
             } else {
-                loginBtn.style.display = 'block';
-                signupBtn.style.display = 'block';
-                userMenu.style.display = 'none';
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (signupBtn) signupBtn.style.display = 'block';
+                if (userMenu) userMenu.style.display = 'none';
             }
             
             // Logout functionality
