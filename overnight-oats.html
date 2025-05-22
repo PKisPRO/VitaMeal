@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overnight Oats - VitaMeal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // You can add custom colors here if needed
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                    VitaMeal
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-green-600 dark:text-green-400 font-medium">Recipes</a>
+                    <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="toggleMobileMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-green-600 dark:text-green-400 font-medium">Recipes</a>
+                    <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Recipe Content -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-4xl mx-auto">
+            <!-- Recipe Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Overnight Oats</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300">A make-ahead breakfast that's both nutritious and delicious</p>
+            </div>
+
+            <!-- Recipe Image -->
+            <div class="mb-12">
+                <img src="https://images.unsplash.com/photo-1517093602195-b40af9261bdb" alt="Overnight Oats" class="w-full h-96 object-cover rounded-xl shadow-lg">
+            </div>
+
+            <!-- Recipe Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Prep Time</h3>
+                    <p class="text-gray-600 dark:text-gray-300">5 minutes</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Rest Time</h3>
+                    <p class="text-gray-600 dark:text-gray-300">8 hours</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Calories</h3>
+                    <p class="text-gray-600 dark:text-gray-300">320 per serving</p>
+                </div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Ingredients</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        1 cup rolled oats
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        1 cup milk (dairy or plant-based)
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        1 tablespoon chia seeds
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        1 tablespoon honey or maple syrup
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        1/2 teaspoon vanilla extract
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        Pinch of salt
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <span class="mr-2">•</span>
+                        Optional toppings: fresh fruits, nuts, cinnamon, nut butter
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Instructions</h2>
+                <ol class="space-y-6">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">1</span>
+                        <p class="text-gray-700 dark:text-gray-300">In a jar or container, combine oats, milk, chia seeds, honey (or maple syrup), vanilla extract, and salt.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">2</span>
+                        <p class="text-gray-700 dark:text-gray-300">Stir well to combine all ingredients.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">3</span>
+                        <p class="text-gray-700 dark:text-gray-300">Seal the container and refrigerate overnight or for at least 8 hours.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">4</span>
+                        <p class="text-gray-700 dark:text-gray-300">In the morning, stir the oats and add more milk if needed to achieve desired consistency.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">5</span>
+                        <p class="text-gray-700 dark:text-gray-300">Top with your favorite toppings and enjoy cold or warm.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Nutrition Info -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Nutrition Information</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Calories</h3>
+                        <p class="text-gray-600 dark:text-gray-300">320</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Protein</h3>
+                        <p class="text-gray-600 dark:text-gray-300">12g</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Carbs</h3>
+                        <p class="text-gray-600 dark:text-gray-300">54g</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Fiber</h3>
+                        <p class="text-gray-600 dark:text-gray-300">8g</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">VitaMeal</h3>
+                    <p class="text-gray-400">Your partner in healthy living.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="recipes.html" class="text-gray-400 hover:text-white transition-colors">Recipes</a></li>
+                        <li><a href="games.html" class="text-gray-400 hover:text-white transition-colors">Games</a></li>
+                        <li><a href="secret-recipes.html" class="text-gray-400 hover:text-white transition-colors">Secret Recipes</a></li>
+                        <li><a href="diet-planner.html" class="text-gray-400 hover:text-white transition-colors">Diet Planner</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: vitameal.happy@gmail.com</li>
+                        <li>Phone: +91 9251681626</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 VitaMeal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode functionality
+        function initDarkMode() {
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        // Initialize dark mode on page load
+        initDarkMode();
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html> 

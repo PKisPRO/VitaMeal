@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Recipe - VitaMeal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // You can add custom colors here if needed
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                    VitaMeal
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Recipes</a>
+                    <a href="upload-recipe.html" class="text-green-600 dark:text-green-400 font-medium">Share Recipe</a>
+                    <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="toggleMobileMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Recipes</a>
+                    <a href="upload-recipe.html" class="text-green-600 dark:text-green-400 font-medium">Share Recipe</a>
+                    <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Upload Recipe Form -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">Share Your Recipe</h1>
+                
+                <form id="recipeForm" class="space-y-6">
+                    <!-- Basic Information -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Basic Information</h2>
+                        <div>
+                            <label for="recipeName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Name</label>
+                            <input type="text" id="recipeName" name="recipeName" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="recipeDescription" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                            <textarea id="recipeDescription" name="recipeDescription" rows="3" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Time and Servings -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="prepTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Prep Time (minutes)</label>
+                            <input type="number" id="prepTime" name="prepTime" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="cookTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cook Time (minutes)</label>
+                            <input type="number" id="cookTime" name="cookTime" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="servings" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Servings</label>
+                            <input type="number" id="servings" name="servings" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+                    </div>
+
+                    <!-- Ingredients -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Ingredients</h2>
+                        <div id="ingredientsList" class="space-y-2">
+                            <div class="flex gap-2">
+                                <input type="text" name="ingredients[]" required
+                                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Enter ingredient">
+                                <button type="button" onclick="removeIngredient(this)" class="text-red-500 hover:text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addIngredient()" class="text-green-500 hover:text-green-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            Add Ingredient
+                        </button>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Instructions</h2>
+                        <div id="instructionsList" class="space-y-2">
+                            <div class="flex gap-2">
+                                <textarea name="instructions[]" required rows="2"
+                                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Enter instruction step"></textarea>
+                                <button type="button" onclick="removeInstruction(this)" class="text-red-500 hover:text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addInstruction()" class="text-green-500 hover:text-green-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            Add Step
+                        </button>
+                    </div>
+
+                    <!-- Media Upload -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Media</h2>
+                        <div>
+                            <label for="recipeImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Image</label>
+                            <input type="file" id="recipeImage" name="recipeImage" accept="image/*" required
+                                class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-md file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-green-50 file:text-green-700
+                                hover:file:bg-green-100
+                                dark:file:bg-green-900 dark:file:text-green-300">
+                        </div>
+                        <div>
+                            <label for="recipeVideo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Video (Optional)</label>
+                            <input type="file" id="recipeVideo" name="recipeVideo" accept="video/*"
+                                class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-md file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-green-50 file:text-green-700
+                                hover:file:bg-green-100
+                                dark:file:bg-green-900 dark:file:text-green-300">
+                        </div>
+                    </div>
+
+                    <!-- Nutrition Information -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Nutrition Information (per serving)</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label for="calories" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Calories</label>
+                                <input type="number" id="calories" name="calories" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="protein" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Protein (g)</label>
+                                <input type="number" id="protein" name="protein" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="carbs" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Carbs (g)</label>
+                                <input type="number" id="carbs" name="carbs" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="fiber" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fiber (g)</label>
+                                <input type="number" id="fiber" name="fiber" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-center">
+                        <button type="submit" class="bg-green-500 text-white px-8 py-3 rounded-lg hover:bg-green-600 transition-colors">
+                            Submit Recipe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">VitaMeal</h3>
+                    <p class="text-gray-400">Your partner in healthy living.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="recipes.html" class="text-gray-400 hover:text-white transition-colors">Recipes</a></li>
+                        <li><a href="games.html" class="text-gray-400 hover:text-white transition-colors">Games</a></li>
+                        <li><a href="secret-recipes.html" class="text-gray-400 hover:text-white transition-colors">Secret Recipes</a></li>
+                        <li><a href="diet-planner.html" class="text-gray-400 hover:text-white transition-colors">Diet Planner</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: vitameal.happy@gmail.com</li>
+                        <li>Phone: +91 9251681626</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 VitaMeal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode functionality
+        function initDarkMode() {
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        // Initialize dark mode on page load
+        initDarkMode();
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Add ingredient field
+        function addIngredient() {
+            const ingredientsList = document.getElementById('ingredientsList');
+            const newIngredient = document.createElement('div');
+            newIngredient.className = 'flex gap-2';
+            newIngredient.innerHTML = `
+                <input type="text" name="ingredients[]" required
+                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    placeholder="Enter ingredient">
+                <button type="button" onclick="removeIngredient(this)" class="text-red-500 hover:text-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            ingredientsList.appendChild(newIngredient);
+        }
+
+        // Remove ingredient field
+        function removeIngredient(button) {
+            button.parentElement.remove();
+        }
+
+        // Add instruction field
+        function addInstruction() {
+            const instructionsList = document.getElementById('instructionsList');
+            const newInstruction = document.createElement('div');
+            newInstruction.className = 'flex gap-2';
+            newInstruction.innerHTML = `
+                <textarea name="instructions[]" required rows="2"
+                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    placeholder="Enter instruction step"></textarea>
+                <button type="button" onclick="removeInstruction(this)" class="text-red-500 hover:text-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            instructionsList.appendChild(newInstruction);
+        }
+
+        // Remove instruction field
+        function removeInstruction(button) {
+            button.parentElement.remove();
+        }
+
+        // Form submission
+        document.getElementById('recipeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please log in to share a recipe');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Get the image file
+            const imageFile = document.getElementById('recipeImage').files[0];
+            if (!imageFile) {
+                alert('Please select an image for your recipe');
+                return;
+            }
+
+            // Convert image to base64
+            const imageBase64 = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(imageFile);
+            });
+
+            // Collect form data
+            const formData = new FormData(this);
+            const recipeData = {
+                name: formData.get('recipeName'),
+                description: formData.get('recipeDescription'),
+                prepTime: parseInt(formData.get('prepTime')),
+                cookTime: parseInt(formData.get('cookTime')),
+                servings: parseInt(formData.get('servings')),
+                ingredients: Array.from(formData.getAll('ingredients[]')).filter(ing => ing.trim() !== ''),
+                instructions: Array.from(formData.getAll('instructions[]')).filter(inst => inst.trim() !== ''),
+                nutrition: {
+                    calories: parseInt(formData.get('calories')),
+                    protein: parseInt(formData.get('protein')),
+                    carbs: parseInt(formData.get('carbs')),
+                    fiber: parseInt(formData.get('fiber'))
+                },
+                image: imageBase64,
+                author: currentUser,
+                date: new Date().toISOString(),
+                likes: 0,
+                likedBy: [],
+                comments: []
+            };
+
+            // Validate required fields
+            if (!recipeData.name || !recipeData.description || !recipeData.ingredients.length || !recipeData.instructions.length) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                // Save recipe to localStorage
+                const userRecipes = JSON.parse(localStorage.getItem('userRecipes') || '[]');
+                
+                // Check if recipe name already exists
+                if (userRecipes.some(recipe => recipe.name === recipeData.name)) {
+                    alert('A recipe with this name already exists. Please choose a different name.');
+                    return;
+                }
+
+                userRecipes.push(recipeData);
+                localStorage.setItem('userRecipes', JSON.stringify(userRecipes));
+
+                // Show success message
+                alert('Recipe uploaded successfully!');
+                
+                // Redirect to recipes page
+                window.location.href = 'recipes.html';
+            } catch (error) {
+                console.error('Error saving recipe:', error);
+                alert('There was an error saving your recipe. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

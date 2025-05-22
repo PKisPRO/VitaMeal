@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - VitaMeal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // You can add custom colors here if needed
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .game-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .memory-card {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .memory-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .memory-card.flipped .memory-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-card-front, .memory-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+        }
+        .memory-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                    VitaMeal
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Recipes</a>
+                    <a href="upload-recipe.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Share Recipe</a>
+                    <a href="games.html" class="text-green-600 dark:text-green-400 font-medium">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="toggleMobileMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Recipes</a>
+                    <a href="upload-recipe.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Share Recipe</a>
+                    <a href="games.html" class="text-green-600 dark:text-green-400 font-medium">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-green-500 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4">Nutrition Games</h1>
+            <p class="text-xl mb-8">Learn about healthy eating while having fun!</p>
+        </div>
+    </header>
+
+    <!-- Games Grid -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Memory Game -->
+            <div class="game-card bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Memory Game" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Memory Game</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Match healthy food pairs and unlock special recipes!</p>
+                    <button onclick="startMemoryGame()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Play Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nutrition Quiz -->
+            <div class="game-card bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Nutrition Quiz" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Nutrition Quiz</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Test your knowledge about healthy eating!</p>
+                    <button onclick="startNutritionQuiz()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Start Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Food Sorting Game -->
+            <div class="game-card bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Food Sorting Game" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Food Sorting Game</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Sort foods into their correct food groups!</p>
+                    <button onclick="startFoodSorting()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modals -->
+    <!-- Memory Game Modal -->
+    <div id="memoryGameModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Memory Game</h2>
+                <button onclick="closeMemoryGame()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="memoryGameBoard" class="grid grid-cols-4 gap-4 mb-4">
+                <!-- Memory cards will be added here dynamically -->
+            </div>
+            <div class="text-center">
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Moves: <span id="memoryMoves">0</span></p>
+                <p class="text-gray-600 dark:text-gray-300">Pairs Found: <span id="memoryPairs">0</span>/8</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nutrition Quiz Modal -->
+    <div id="nutritionQuizModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Nutrition Quiz</h2>
+                <button onclick="closeNutritionQuiz()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="quizContent" class="mb-4">
+                <!-- Quiz questions will be added here dynamically -->
+            </div>
+            <div class="text-center">
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Score: <span id="quizScore">0</span>/10</p>
+                <button onclick="submitQuizAnswer()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    Submit Answer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Sorting Modal -->
+    <div id="foodSortingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Food Sorting Game</h2>
+                <button onclick="closeFoodSorting()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Food Items</h3>
+                    <div id="foodItems" class="space-y-2">
+                        <!-- Food items will be added here dynamically -->
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Food Groups</h3>
+                    <div id="foodGroups" class="space-y-4">
+                        <!-- Food groups will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Items Sorted: <span id="sortedItems">0</span>/10</p>
+                <button onclick="checkSorting()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    Check Answers
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">VitaMeal</h3>
+                    <p class="text-gray-400">Your partner in healthy living.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="recipes.html" class="text-gray-400 hover:text-white transition-colors">Recipes</a></li>
+                        <li><a href="games.html" class="text-gray-400 hover:text-white transition-colors">Games</a></li>
+                        <li><a href="secret-recipes.html" class="text-gray-400 hover:text-white transition-colors">Secret Recipes</a></li>
+                        <li><a href="diet-planner.html" class="text-gray-400 hover:text-white transition-colors">Diet Planner</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: vitameal.happy@gmail.com</li>
+                        <li>Phone: +91 9251681626</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 VitaMeal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode functionality
+        function initDarkMode() {
+            // Check for saved theme preference or use system preference
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        // Initialize dark mode on page load
+        initDarkMode();
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Memory Game
+        let memoryCards = [];
+        let flippedCards = [];
+        let moves = 0;
+        let pairs = 0;
+
+        function startMemoryGame() {
+            document.getElementById('memoryGameModal').classList.remove('hidden');
+            document.getElementById('memoryGameModal').classList.add('flex');
+            initializeMemoryGame();
+        }
+
+        function closeMemoryGame() {
+            document.getElementById('memoryGameModal').classList.add('hidden');
+            document.getElementById('memoryGameModal').classList.remove('flex');
+        }
+
+        function initializeMemoryGame() {
+            const foods = [
+                'apple', 'banana', 'carrot', 'orange',
+                'apple', 'banana', 'carrot', 'orange'
+            ];
+            memoryCards = shuffleArray([...foods]);
+            flippedCards = [];
+            moves = 0;
+            pairs = 0;
+            updateMemoryStats();
+
+            const board = document.getElementById('memoryGameBoard');
+            board.innerHTML = '';
+            memoryCards.forEach((food, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg';
+                card.innerHTML = `
+                    <div class="memory-card-inner">
+                        <div class="memory-card-front flex items-center justify-center">
+                            <span class="text-4xl">?</span>
+                        </div>
+                        <div class="memory-card-back flex items-center justify-center">
+                            <span class="text-4xl">${food}</span>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => flipCard(index);
+                board.appendChild(card);
+            });
+        }
+
+        function flipCard(index) {
+            if (flippedCards.length === 2) return;
+            if (flippedCards.includes(index)) return;
+
+            const card = document.querySelectorAll('.memory-card')[index];
+            card.classList.add('flipped');
+            flippedCards.push(index);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                updateMemoryStats();
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [index1, index2] = flippedCards;
+            if (memoryCards[index1] === memoryCards[index2]) {
+                pairs++;
+                updateMemoryStats();
+                flippedCards = [];
+                if (pairs === 4) {
+                    setTimeout(() => {
+                        alert('Congratulations! You won!');
+                        unlockRecipe('super-green-smoothie');
+                    }, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    flippedCards.forEach(index => {
+                        document.querySelectorAll('.memory-card')[index].classList.remove('flipped');
+                    });
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function updateMemoryStats() {
+            document.getElementById('memoryMoves').textContent = moves;
+            document.getElementById('memoryPairs').textContent = pairs;
+        }
+
+        // Nutrition Quiz
+        let currentQuestion = 0;
+        let score = 0;
+        const quizQuestions = [
+            {
+                question: "Which of these is a good source of protein?",
+                options: ["Apple", "Chicken", "Carrot", "Banana"],
+                correct: 1
+            },
+            {
+                question: "What is the main nutrient in whole grains?",
+                options: ["Protein", "Fat", "Carbohydrates", "Vitamins"],
+                correct: 2
+            },
+            {
+                question: "Which vitamin is important for bone health?",
+                options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin E"],
+                correct: 2
+            }
+        ];
+
+        function startNutritionQuiz() {
+            document.getElementById('nutritionQuizModal').classList.remove('hidden');
+            document.getElementById('nutritionQuizModal').classList.add('flex');
+            currentQuestion = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function closeNutritionQuiz() {
+            document.getElementById('nutritionQuizModal').classList.add('hidden');
+            document.getElementById('nutritionQuizModal').classList.remove('flex');
+        }
+
+        function showQuestion() {
+            const question = quizQuestions[currentQuestion];
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = `
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">${question.question}</h3>
+                <div class="space-y-2">
+                    ${question.options.map((option, index) => `
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="answer" value="${index}" class="form-radio text-green-500">
+                            <span class="text-gray-700 dark:text-gray-300">${option}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function submitQuizAnswer() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) {
+                alert('Please select an answer');
+                return;
+            }
+
+            const answer = parseInt(selected.value);
+            if (answer === quizQuestions[currentQuestion].correct) {
+                score++;
+            }
+
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                showQuestion();
+            } else {
+                document.getElementById('quizContent').innerHTML = `
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                        Quiz Complete! Your score: ${score}/${quizQuestions.length}
+                    </h3>
+                `;
+                if (score >= quizQuestions.length - 1) {
+                    unlockRecipe('golden-turmeric-latte');
+                }
+            }
+            document.getElementById('quizScore').textContent = score;
+        }
+
+        // Food Sorting Game
+        const foodItems = [
+            { name: 'Apple', group: 'Fruits' },
+            { name: 'Carrot', group: 'Vegetables' },
+            { name: 'Chicken', group: 'Protein' },
+            { name: 'Rice', group: 'Grains' },
+            { name: 'Milk', group: 'Dairy' }
+        ];
+
+        function startFoodSorting() {
+            document.getElementById('foodSortingModal').classList.remove('hidden');
+            document.getElementById('foodSortingModal').classList.add('flex');
+            initializeFoodSorting();
+        }
+
+        function closeFoodSorting() {
+            document.getElementById('foodSortingModal').classList.add('hidden');
+            document.getElementById('foodSortingModal').classList.remove('flex');
+        }
+
+        function initializeFoodSorting() {
+            const foodItemsContainer = document.getElementById('foodItems');
+            const foodGroupsContainer = document.getElementById('foodGroups');
+            
+            // Add food items
+            foodItemsContainer.innerHTML = shuffleArray([...foodItems])
+                .map(item => `
+                    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg cursor-move" draggable="true" data-food="${item.name}">
+                        ${item.name}
+                    </div>
+                `).join('');
+
+            // Add food groups
+            const groups = ['Fruits', 'Vegetables', 'Protein', 'Grains', 'Dairy'];
+            foodGroupsContainer.innerHTML = groups.map(group => `
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg" data-group="${group}">
+                    <h4 class="font-semibold text-gray-800 dark:text-white mb-2">${group}</h4>
+                    <div class="min-h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-2" 
+                         ondrop="drop(event)" 
+                         ondragover="allowDrop(event)">
+                    </div>
+                </div>
+            `).join('');
+
+            // Add drag and drop event listeners
+            document.querySelectorAll('[draggable="true"]').forEach(item => {
+                item.addEventListener('dragstart', drag);
+            });
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.dataset.food);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const food = ev.dataTransfer.getData("text");
+            const group = ev.target.closest('[data-group]').dataset.group;
+            
+            if (foodItems.find(item => item.name === food && item.group === group)) {
+                ev.target.appendChild(document.querySelector(`[data-food="${food}"]`));
+                updateSortedItems();
+            }
+        }
+
+        function updateSortedItems() {
+            const sorted = document.querySelectorAll('.min-h-\\[100px\\] > div').length;
+            document.getElementById('sortedItems').textContent = sorted;
+        }
+
+        function checkSorting() {
+            const sorted = document.querySelectorAll('.min-h-\\[100px\\] > div').length;
+            if (sorted === foodItems.length) {
+                alert('Congratulations! You sorted all the foods correctly!');
+                unlockRecipe('rainbow-buddha-bowl');
+            } else {
+                alert('Keep trying! Some foods are not in their correct groups.');
+            }
+        }
+
+        // Utility Functions
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function unlockRecipe(recipeId) {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please log in to unlock recipes');
+                return;
+            }
+
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.email === currentUser);
+
+            if (userIndex === -1) {
+                alert('User not found');
+                return;
+            }
+
+            // Initialize unlockedRecipes array if it doesn't exist
+            if (!users[userIndex].unlockedRecipes) {
+                users[userIndex].unlockedRecipes = [];
+            }
+
+            // Add recipe to unlocked recipes if not already unlocked
+            if (!users[userIndex].unlockedRecipes.includes(recipeId)) {
+                users[userIndex].unlockedRecipes.push(recipeId);
+                localStorage.setItem('users', JSON.stringify(users));
+                alert('Recipe unlocked successfully! Check the Secret Recipes page.');
+                setTimeout(() => {
+                    window.location.href = 'secret-recipes.html';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html> 
