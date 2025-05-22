@@ -122,16 +122,7 @@
         });
 
         // Dark mode functionality
-        function initDarkMode() {
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
+        window.toggleDarkMode = function() {
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('darkMode', 'false');
@@ -139,10 +130,14 @@
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('darkMode', 'true');
             }
-        }
+        };
 
         // Initialize dark mode on page load
-        initDarkMode();
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+            }
+        });
 
         // Check if user is already logged in
         window.onload = function() {

@@ -200,33 +200,30 @@
             });
             
             // Initialize dark mode
-            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeToggle = document.querySelector('button[onclick="toggleDarkMode()"]');
             const body = document.body;
             
             // Check for saved dark mode preference
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
             }
             
             // Toggle dark mode
-            darkModeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'enabled');
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
                 } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'disabled');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
                 }
-            });
+            };
             
             // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const nav = document.querySelector('nav');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                nav.classList.toggle('active');
-            });
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
             
             // Check login status
             const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -247,10 +244,10 @@
             }
             
             // Logout functionality
-            document.getElementById('logoutBtn').addEventListener('click', function() {
+            window.logout = function() {
                 localStorage.removeItem('currentUser');
                 window.location.href = basePath + '/login.html';
-            });
+            };
         });
     </script>
 </body>
