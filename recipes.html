@@ -406,6 +406,18 @@
             </div>
         </div>
 
+        <!-- Leaderboard Section -->
+        <div class="mt-16">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-8">Most Popular Recipes</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="leaderboard">
+                        <!-- Leaderboard items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- User Submitted Recipes -->
         <div class="mt-16">
             <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-8">Community Recipes</h2>
@@ -536,14 +548,66 @@
         function loadUserRecipes() {
             const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
             const recipesContainer = document.getElementById('userRecipes');
+            const leaderboardContainer = document.getElementById('leaderboard');
             
-            if (!recipesContainer) return;
+            if (!recipesContainer || !leaderboardContainer) return;
             
             if (recipes.length === 0) {
                 recipesContainer.innerHTML = '<p class="text-gray-600 dark:text-gray-400 text-center">No recipes available yet. Be the first to share your recipe!</p>';
+                leaderboardContainer.innerHTML = '<p class="text-gray-600 dark:text-gray-400 text-center">No recipes available yet.</p>';
                 return;
             }
             
+            // Sort recipes by likes (most liked first)
+            const sortedByLikes = [...recipes].sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            
+            // Update leaderboard
+            leaderboardContainer.innerHTML = '';
+            const topRecipes = sortedByLikes.slice(0, 3); // Show top 3 recipes
+            
+            topRecipes.forEach((recipe, index) => {
+                const likes = recipe.likes || 0;
+                const likedBy = recipe.likedBy || [];
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const isLiked = currentUser && likedBy.includes(currentUser.email);
+                
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.className = 'recipe-card bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg relative';
+                
+                // Add rank badge
+                const rankBadge = document.createElement('div');
+                rankBadge.className = 'absolute top-4 left-4 bg-yellow-400 text-gray-900 font-bold rounded-full w-8 h-8 flex items-center justify-center z-10';
+                rankBadge.textContent = index + 1;
+                
+                leaderboardItem.innerHTML = `
+                    ${rankBadge.outerHTML}
+                    <div class="relative">
+                        <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-48 object-cover" onerror="this.src='${basePath}/images/placeholder.jpg'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${recipe.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">${recipe.description}</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500 font-medium">${recipe.category || 'Uncategorized'}</span>
+                                <span class="text-yellow-500 font-medium">${likes} likes</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="likeRecipe('${recipe.name}')" class="text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors ${isLiked ? 'text-red-500 dark:text-red-400' : ''}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <a href="${basePath}/recipe-detail.html?name=${encodeURIComponent(recipe.name)}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                    View Recipe
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                leaderboardContainer.appendChild(leaderboardItem);
+            });
+            
+            // Update regular recipe grid
             recipesContainer.innerHTML = '';
             
             // Sort recipes by date (newest first)
