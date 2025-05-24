@@ -212,44 +212,37 @@
         // Meal plan generation logic
         const mealDatabase = {
             breakfast: [
-                { name: "Oatmeal with Berries", calories: 350, protein: 12, carbs: 45, fat: 8, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Greek Yogurt Parfait", calories: 300, protein: 20, carbs: 35, fat: 10, vegetarian: true, vegan: false, glutenFree: true },
-                { name: "Avocado Toast", calories: 320, protein: 8, carbs: 30, fat: 18, vegetarian: true, vegan: true, glutenFree: false },
-                { name: "Protein Smoothie", calories: 280, protein: 25, carbs: 25, fat: 5, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Vegetable Poha", calories: 320, protein: 8, carbs: 45, fat: 12, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Idli with Sambar", calories: 280, protein: 10, carbs: 40, fat: 5, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Upma", calories: 300, protein: 8, carbs: 42, fat: 10, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Dosa with Chutney", calories: 350, protein: 12, carbs: 48, fat: 15, vegetarian: true, vegan: true, glutenFree: true }
+                { name: "Dosa with Chutney", calories: 350, protein: 12, carbs: 48, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Greek Yogurt Parfait", calories: 300, protein: 20, carbs: 35, fat: 10, vegetarian: true, vegan: false, glutenFree: true },
+                { name: "Avocado Toast", calories: 320, protein: 8, carbs: 30, fat: 18, vegetarian: true, vegan: true, glutenFree: false },
+                { name: "Overnight Oats", calories: 280, protein: 10, carbs: 45, fat: 8, vegetarian: true, vegan: true, glutenFree: true }
             ],
             lunch: [
-                { name: "Vegetable Stir-Fry", calories: 380, protein: 12, carbs: 40, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Quinoa Bowl", calories: 400, protein: 15, carbs: 45, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Mediterranean Salad", calories: 350, protein: 10, carbs: 35, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Vegetable Wrap", calories: 320, protein: 12, carbs: 45, fat: 15, vegetarian: true, vegan: true, glutenFree: false },
-                { name: "Vegetable Biryani", calories: 450, protein: 15, carbs: 60, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Dal Makhani", calories: 380, protein: 18, carbs: 45, fat: 15, vegetarian: true, vegan: false, glutenFree: true },
-                { name: "Rajma Chawal", calories: 420, protein: 20, carbs: 55, fat: 12, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Chana Masala", calories: 350, protein: 15, carbs: 40, fat: 10, vegetarian: true, vegan: true, glutenFree: true }
+                { name: "Quinoa Bowl", calories: 400, protein: 15, carbs: 45, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Lentil Soup", calories: 320, protein: 18, carbs: 45, fat: 8, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Sweet Potato Buddha Bowl", calories: 380, protein: 12, carbs: 55, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Quinoa Stuffed Bell Peppers", calories: 350, protein: 14, carbs: 48, fat: 12, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Rainbow Buddha Bowl", calories: 360, protein: 15, carbs: 50, fat: 14, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Chickpea Curry", calories: 380, protein: 16, carbs: 45, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Black Bean Tacos", calories: 350, protein: 14, carbs: 42, fat: 12, vegetarian: true, vegan: true, glutenFree: true }
             ],
             dinner: [
-                { name: "Vegetable Curry", calories: 480, protein: 15, carbs: 45, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Vegetable Stir-Fry", calories: 380, protein: 12, carbs: 40, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Tofu Stir-Fry", calories: 420, protein: 20, carbs: 40, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
                 { name: "Mushroom Risotto", calories: 450, protein: 12, carbs: 50, fat: 22, vegetarian: true, vegan: false, glutenFree: false },
                 { name: "Vegetable Pasta", calories: 400, protein: 15, carbs: 55, fat: 15, vegetarian: true, vegan: true, glutenFree: false },
-                { name: "Palak Paneer", calories: 380, protein: 18, carbs: 25, fat: 22, vegetarian: true, vegan: false, glutenFree: true },
-                { name: "Baingan Bharta", calories: 320, protein: 8, carbs: 35, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Vegetable Pulao", calories: 400, protein: 12, carbs: 55, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Aloo Gobi", calories: 350, protein: 10, carbs: 40, fat: 18, vegetarian: true, vegan: true, glutenFree: true }
+                { name: "Quinoa Buddha Bowl", calories: 380, protein: 14, carbs: 48, fat: 16, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Grilled Salmon", calories: 420, protein: 35, carbs: 0, fat: 28, vegetarian: false, vegan: false, glutenFree: true }
             ],
             snacks: [
-                { name: "Mixed Nuts", calories: 160, protein: 6, carbs: 8, fat: 14, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Apple with Peanut Butter", calories: 200, protein: 6, carbs: 25, fat: 10, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Hummus with Vegetables", calories: 180, protein: 8, carbs: 20, fat: 9, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Trail Mix", calories: 170, protein: 5, carbs: 15, fat: 12, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Roasted Chana", calories: 150, protein: 8, carbs: 20, fat: 5, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Makhana (Fox Nuts)", calories: 140, protein: 4, carbs: 18, fat: 3, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Sprouts Salad", calories: 180, protein: 12, carbs: 25, fat: 5, vegetarian: true, vegan: true, glutenFree: true },
-                { name: "Fruit Chaat", calories: 160, protein: 3, carbs: 30, fat: 4, vegetarian: true, vegan: true, glutenFree: true }
+                { name: "Chia Pudding", calories: 180, protein: 6, carbs: 20, fat: 10, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Golden Turmeric Latte", calories: 120, protein: 4, carbs: 15, fat: 6, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Super Green Smoothie", calories: 160, protein: 8, carbs: 25, fat: 5, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Avocado Mousse", calories: 200, protein: 4, carbs: 12, fat: 16, vegetarian: true, vegan: true, glutenFree: true }
             ]
         };
 
