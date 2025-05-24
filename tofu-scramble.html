@@ -1,13 +1,172 @@
-            <!-- Comments Section -->
-            <div id="commentsSection" class="hidden mt-8">
-                <div class="mb-4">
-                    <textarea id="commentInput" placeholder="Write a comment..." class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 mb-2" rows="3"></textarea>
-                    <button onclick="addComment()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Post Comment</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tofu Scramble - VitaMeal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // You can add custom colors here if needed
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                    VitaMeal
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
+                    <a href="recipes.html" class="text-green-600 dark:text-green-400 font-medium">Recipes</a>
+                    <a href="upload-recipe.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Share Recipe</a>
+                    <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
+                    <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
+                    <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </button>
                 </div>
-                <div id="commentsList" class="space-y-4"></div>
             </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- Recipe Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Tofu Scramble</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">A protein-rich vegan alternative to scrambled eggs, packed with vegetables and flavorful spices.</p>
+
+            <!-- Recipe Image -->
+            <div class="mb-8">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Tofu Scramble" class="w-full h-96 object-cover rounded-lg shadow-lg">
+            </div>
+
+            <!-- Recipe Info -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Prep Time</h3>
+                    <p class="text-gray-600 dark:text-gray-300">10 minutes</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Cook Time</h3>
+                    <p class="text-gray-600 dark:text-gray-300">15 minutes</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Servings</h3>
+                    <p class="text-gray-600 dark:text-gray-300">2 people</p>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Description</h2>
+                <p class="text-gray-600 dark:text-gray-300">
+                    This Tofu Scramble is a delicious and nutritious vegan breakfast option. Made with crumbled tofu, sautéed vegetables, and aromatic spices, it's a satisfying way to start your day with plant-based protein.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegetarian</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegan</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Gluten-Free</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">High Protein</span>
+                </div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Ingredients</h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>1 block (14 oz) firm tofu, drained and crumbled</li>
+                    <li>1 onion, diced</li>
+                    <li>1 bell pepper, diced</li>
+                    <li>2 cups spinach, chopped</li>
+                    <li>2 cloves garlic, minced</li>
+                    <li>1 tsp turmeric powder</li>
+                    <li>1/2 tsp cumin powder</li>
+                    <li>1/2 tsp paprika</li>
+                    <li>2 tbsp nutritional yeast</li>
+                    <li>2 tbsp olive oil</li>
+                    <li>Salt and pepper to taste</li>
+                    <li>Fresh herbs for garnish (optional)</li>
+                </ul>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Instructions</h2>
+                <ol class="list-decimal list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Press and drain the tofu to remove excess water.</li>
+                    <li>Heat olive oil in a large skillet over medium heat.</li>
+                    <li>Add onions and cook until translucent, about 3-4 minutes.</li>
+                    <li>Add garlic and cook for 30 seconds until fragrant.</li>
+                    <li>Add bell peppers and cook for 2-3 minutes.</li>
+                    <li>Crumble the tofu into the skillet and add turmeric, cumin, and paprika.</li>
+                    <li>Cook for 5-7 minutes, stirring occasionally.</li>
+                    <li>Add spinach and cook until wilted.</li>
+                    <li>Stir in nutritional yeast and season with salt and pepper.</li>
+                    <li>Garnish with fresh herbs if desired and serve hot.</li>
+                </ol>
+            </div>
+
+            <!-- Nutritional Information -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Nutritional Information</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Calories</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">280</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Protein</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">20g</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Carbs</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">15g</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Fat</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">18g</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Tips for Perfect Tofu Scramble</h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Press tofu well to remove excess water for better texture.</li>
+                    <li>Use firm or extra-firm tofu for the best results.</li>
+                    <li>Don't overcook the vegetables to maintain their crunch.</li>
+                    <li>Add nutritional yeast for a cheesy flavor.</li>
+                    <li>Serve with toast or wrap in a tortilla for a complete meal.</li>
+                </ul>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Comments</h2>
+                <div id="comments" class="space-y-4 mb-6">
+                    <!-- Comments will be loaded here -->
+                </div>
+                <form id="commentForm" class="space-y-4">
+                    <textarea id="commentText" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300" rows="3" placeholder="Share your thoughts..."></textarea>
+                    <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">Post Comment</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-12">
@@ -67,113 +226,77 @@
     </div>
 
     <script>
-        // Dark mode toggle
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-        }
-
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.documentElement.classList.add('dark');
-        }
-
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Check access on page load
-        window.onload = function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Load saved likes and comments
-            const savedLikes = localStorage.getItem('tofu-scramble-likes');
-            if (savedLikes) {
-                document.getElementById('likeCount').textContent = savedLikes;
-            }
-
-            const savedComments = JSON.parse(localStorage.getItem('tofu-scramble-comments') || '[]');
-            document.getElementById('commentCount').textContent = savedComments.length;
-        }
-
-        // Like functionality
-        function toggleLike() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                alert('Please log in to like recipes');
-                return;
-            }
-
-            const likeCount = document.getElementById('likeCount');
-            const currentLikes = parseInt(likeCount.textContent);
-            const newLikes = currentLikes + 1;
-            likeCount.textContent = newLikes;
-            localStorage.setItem('tofu-scramble-likes', newLikes);
-        }
-
-        // Comments functionality
-        function toggleComments() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                alert('Please log in to view comments');
-                return;
-            }
-
-            const commentsSection = document.getElementById('commentsSection');
-            commentsSection.classList.toggle('hidden');
-            loadComments();
-        }
-
-        function addComment() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                alert('Please log in to add comments');
-                return;
-            }
-
-            const commentInput = document.getElementById('commentInput');
-            const comment = commentInput.value.trim();
-            
-            if (comment) {
-                const comments = JSON.parse(localStorage.getItem('tofu-scramble-comments') || '[]');
-                comments.push({
-                    user: currentUser,
-                    text: comment,
-                    timestamp: new Date().toISOString()
-                });
-                
-                localStorage.setItem('tofu-scramble-comments', JSON.stringify(comments));
-                commentInput.value = '';
-                loadComments();
-            }
-        }
-
-        function loadComments() {
-            const comments = JSON.parse(localStorage.getItem('tofu-scramble-comments') || '[]');
-            const commentsList = document.getElementById('commentsList');
-            commentsList.innerHTML = '';
-            
-            comments.forEach(comment => {
-                const commentElement = document.createElement('div');
-                commentElement.className = 'bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4';
-                commentElement.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="font-semibold text-gray-800 dark:text-white">${comment.user}</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">${new Date(comment.timestamp).toLocaleDateString()}</span>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300">${comment.text}</p>
-                `;
-                commentsList.appendChild(commentElement);
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
+        
+        // Update navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('index.html') || 
+                    href.startsWith('recipes.html') || 
+                    href.startsWith('upload-recipe.html') || 
+                    href.startsWith('games.html') || 
+                    href.startsWith('secret-recipes.html') || 
+                    href.startsWith('diet-planner.html')) {
+                    if (!href.includes(basePath)) {
+                        link.href = basePath + '/' + href;
+                    }
+                }
             });
             
-            document.getElementById('commentCount').textContent = comments.length;
-        }
+            // Initialize dark mode
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // Toggle dark mode
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                }
+            };
+            
+            // Mobile menu toggle
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
+
+            // Comments functionality
+            const commentForm = document.getElementById('commentForm');
+            const commentsContainer = document.getElementById('comments');
+            
+            // Load comments
+            function loadComments() {
+                const comments = JSON.parse(localStorage.getItem('tofu-scramble-comments')) || [];
+                commentsContainer.innerHTML = comments.map(comment => `
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="text-gray-600 dark:text-gray-300">${comment}</p>
+                    </div>
+                `).join('');
+            }
+            
+            // Save comment
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const commentText = document.getElementById('commentText').value.trim();
+                if (commentText) {
+                    const comments = JSON.parse(localStorage.getItem('tofu-scramble-comments')) || [];
+                    comments.push(commentText);
+                    localStorage.setItem('tofu-scramble-comments', JSON.stringify(comments));
+                    document.getElementById('commentText').value = '';
+                    loadComments();
+                }
+            });
+            
+            // Initial load of comments
+            loadComments();
+        });
 
         // Video modal functionality
         function openVideoModal() {

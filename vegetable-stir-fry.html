@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegetable Stir Fry - VitaMeal</title>
+    <title>Vegetable Stir-Fry - VitaMeal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -29,6 +29,7 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
                     <a href="recipes.html" class="text-green-600 dark:text-green-400 font-medium">Recipes</a>
+                    <a href="upload-recipe.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Share Recipe</a>
                     <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
                     <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
                     <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
@@ -49,6 +50,7 @@
                 <div class="flex flex-col space-y-4">
                     <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</a>
                     <a href="recipes.html" class="text-green-600 dark:text-green-400 font-medium">Recipes</a>
+                    <a href="upload-recipe.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Share Recipe</a>
                     <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
                     <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
                     <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
@@ -58,141 +60,129 @@
     </nav>
 
     <!-- Recipe Content -->
-    <div class="container mx-auto px-4 py-12">
+    <main class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
-            <!-- Recipe Header -->
-            <div class="text-center mb-12">
-                <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Vegetable Stir Fry</h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300">A quick and healthy way to enjoy a rainbow of vegetables</p>
-            </div>
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Vegetable Stir-Fry</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">A quick and healthy stir-fry loaded with colorful vegetables and aromatic Asian flavors.</p>
 
             <!-- Recipe Image -->
-            <div class="mb-12">
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Vegetable Stir Fry" class="w-full h-96 object-cover rounded-xl shadow-lg">
+            <div class="mb-8">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Vegetable Stir-Fry" class="w-full h-96 object-cover rounded-lg shadow-lg">
             </div>
 
-            <!-- Recipe Details -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Prep Time</h3>
+            <!-- Recipe Info -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Prep Time</h3>
                     <p class="text-gray-600 dark:text-gray-300">15 minutes</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Cook Time</h3>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Cook Time</h3>
                     <p class="text-gray-600 dark:text-gray-300">10 minutes</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Calories</h3>
-                    <p class="text-gray-600 dark:text-gray-300">280 per serving</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Servings</h3>
+                    <p class="text-gray-600 dark:text-gray-300">4 people</p>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Description</h2>
+                <p class="text-gray-600 dark:text-gray-300">
+                    This Vegetable Stir-Fry is a vibrant and nutritious dish that combines fresh vegetables with a savory sauce. It's quick to prepare, making it perfect for busy weeknights, and can be customized with your favorite vegetables and protein sources.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegetarian</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegan</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Gluten-Free</span>
                 </div>
             </div>
 
             <!-- Ingredients -->
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-12">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Ingredients</h2>
-                <ul class="space-y-4">
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        2 tablespoons sesame oil
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        2 cloves garlic, minced
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 tablespoon ginger, minced
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 bell pepper, sliced
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 cup broccoli florets
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 cup snap peas
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 carrot, julienned
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        2 tablespoons soy sauce
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 tablespoon rice vinegar
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        1 teaspoon honey
-                    </li>
-                    <li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <span class="mr-2">•</span>
-                        Sesame seeds for garnish
-                    </li>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Ingredients</h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>2 cups broccoli florets</li>
+                    <li>1 bell pepper, sliced</li>
+                    <li>1 carrot, julienned</li>
+                    <li>1 cup snap peas</li>
+                    <li>1 cup mushrooms, sliced</li>
+                    <li>2 cloves garlic, minced</li>
+                    <li>1 inch ginger, grated</li>
+                    <li>2 tbsp soy sauce</li>
+                    <li>1 tbsp sesame oil</li>
+                    <li>1 tbsp cornstarch</li>
+                    <li>1/4 cup vegetable broth</li>
+                    <li>2 tbsp cooking oil</li>
+                    <li>Salt and pepper to taste</li>
                 </ul>
             </div>
 
             <!-- Instructions -->
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-12">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Instructions</h2>
-                <ol class="space-y-6">
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">1</span>
-                        <p class="text-gray-700 dark:text-gray-300">In a small bowl, whisk together soy sauce, rice vinegar, and honey. Set aside.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">2</span>
-                        <p class="text-gray-700 dark:text-gray-300">Heat sesame oil in a large wok or skillet over high heat.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">3</span>
-                        <p class="text-gray-700 dark:text-gray-300">Add garlic and ginger, stir for 30 seconds until fragrant.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">4</span>
-                        <p class="text-gray-700 dark:text-gray-300">Add vegetables in order of cooking time: carrots first, then broccoli, bell pepper, and snap peas. Stir-fry for 3-4 minutes until vegetables are crisp-tender.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">5</span>
-                        <p class="text-gray-700 dark:text-gray-300">Pour the sauce over the vegetables and stir to coat. Cook for 1 minute more.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center mr-4">6</span>
-                        <p class="text-gray-700 dark:text-gray-300">Garnish with sesame seeds and serve hot.</p>
-                    </li>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Instructions</h2>
+                <ol class="list-decimal list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Prepare the sauce by mixing soy sauce, cornstarch, and vegetable broth in a small bowl.</li>
+                    <li>Heat cooking oil in a large wok or skillet over high heat.</li>
+                    <li>Add garlic and ginger, stir for 30 seconds until fragrant.</li>
+                    <li>Add carrots and broccoli, stir-fry for 2-3 minutes.</li>
+                    <li>Add bell pepper, snap peas, and mushrooms. Continue stir-frying for 2-3 minutes.</li>
+                    <li>Pour the sauce over the vegetables and stir well.</li>
+                    <li>Cook for 1-2 minutes until the sauce thickens.</li>
+                    <li>Drizzle with sesame oil and season with salt and pepper.</li>
+                    <li>Serve hot over rice or noodles.</li>
                 </ol>
             </div>
 
-            <!-- Nutrition Info -->
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Nutrition Information</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Calories</h3>
-                        <p class="text-gray-600 dark:text-gray-300">280</p>
+            <!-- Nutritional Information -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Nutritional Information</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Calories</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">180</p>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Protein</h3>
-                        <p class="text-gray-600 dark:text-gray-300">8g</p>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Protein</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">8g</p>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Carbs</h3>
-                        <p class="text-gray-600 dark:text-gray-300">32g</p>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Carbs</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">22g</p>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Fiber</h3>
-                        <p class="text-gray-600 dark:text-gray-300">6g</p>
+                    <div class="text-center">
+                        <p class="text-gray-600 dark:text-gray-300">Fat</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">9g</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Tips -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Tips for Perfect Vegetable Stir-Fry</h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Cut all vegetables into similar sizes for even cooking.</li>
+                    <li>Have all ingredients prepared before starting to cook.</li>
+                    <li>Keep the heat high and stir constantly for the best results.</li>
+                    <li>Add vegetables in order of cooking time (hardest to softest).</li>
+                    <li>Don't overcrowd the pan to ensure proper stir-frying.</li>
+                </ul>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Comments</h2>
+                <div id="comments" class="space-y-4 mb-6">
+                    <!-- Comments will be loaded here -->
+                </div>
+                <form id="commentForm" class="space-y-4">
+                    <textarea id="commentText" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300" rows="3" placeholder="Share your thoughts..."></textarea>
+                    <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">Post Comment</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-12">
@@ -235,34 +225,77 @@
     </footer>
 
     <script>
-        // Dark mode functionality
-        function initDarkMode() {
-            if (localStorage.getItem('darkMode') === 'true' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Set base path for GitHub Pages
+        const basePath = '/VitaMeal';
+        
+        // Update navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('index.html') || 
+                    href.startsWith('recipes.html') || 
+                    href.startsWith('upload-recipe.html') || 
+                    href.startsWith('games.html') || 
+                    href.startsWith('secret-recipes.html') || 
+                    href.startsWith('diet-planner.html')) {
+                    if (!href.includes(basePath)) {
+                        link.href = basePath + '/' + href;
+                    }
+                }
+            });
+            
+            // Initialize dark mode
+            if (localStorage.getItem('darkMode') === 'true') {
                 document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
             }
-        }
+            
+            // Toggle dark mode
+            window.toggleDarkMode = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                }
+            };
+            
+            // Mobile menu toggle
+            window.toggleMobileMenu = function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            };
 
-        function toggleDarkMode() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
+            // Comments functionality
+            const commentForm = document.getElementById('commentForm');
+            const commentsContainer = document.getElementById('comments');
+            
+            // Load comments
+            function loadComments() {
+                const comments = JSON.parse(localStorage.getItem('vegetable-stir-fry-comments')) || [];
+                commentsContainer.innerHTML = comments.map(comment => `
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="text-gray-600 dark:text-gray-300">${comment}</p>
+                    </div>
+                `).join('');
             }
-        }
-
-        // Initialize dark mode on page load
-        initDarkMode();
-
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
+            
+            // Save comment
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const commentText = document.getElementById('commentText').value.trim();
+                if (commentText) {
+                    const comments = JSON.parse(localStorage.getItem('vegetable-stir-fry-comments')) || [];
+                    comments.push(commentText);
+                    localStorage.setItem('vegetable-stir-fry-comments', JSON.stringify(comments));
+                    document.getElementById('commentText').value = '';
+                    loadComments();
+                }
+            });
+            
+            // Initial load of comments
+            loadComments();
+        });
     </script>
 </body>
 </html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chickpea Curry - VitaMeal</title>
+    <title>Vegetable Poha - VitaMeal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -54,6 +54,11 @@
                     <a href="games.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Games</a>
                     <a href="secret-recipes.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Secret Recipes</a>
                     <a href="diet-planner.html" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Diet Planner</a>
+                    <button onclick="toggleDarkMode()" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                        <span>Toggle Theme</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -62,27 +67,27 @@
     <!-- Recipe Content -->
     <main class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Chickpea Curry</h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">A hearty and flavorful curry made with protein-rich chickpeas, aromatic spices, and creamy coconut milk.</p>
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Vegetable Poha</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">A light and nutritious breakfast dish made with flattened rice, fresh vegetables, and aromatic spices.</p>
 
             <!-- Recipe Image -->
             <div class="mb-8">
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Chickpea Curry" class="w-full h-96 object-cover rounded-lg shadow-lg">
+                <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b" alt="Vegetable Poha" class="w-full h-96 object-cover rounded-lg shadow-lg">
             </div>
 
             <!-- Recipe Info -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
                     <h3 class="font-semibold text-gray-800 dark:text-white">Prep Time</h3>
-                    <p class="text-gray-600 dark:text-gray-300">15 minutes</p>
+                    <p class="text-gray-600 dark:text-gray-300">10 minutes</p>
                 </div>
                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
                     <h3 class="font-semibold text-gray-800 dark:text-white">Cook Time</h3>
-                    <p class="text-gray-600 dark:text-gray-300">30 minutes</p>
+                    <p class="text-gray-600 dark:text-gray-300">15 minutes</p>
                 </div>
                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
                     <h3 class="font-semibold text-gray-800 dark:text-white">Servings</h3>
-                    <p class="text-gray-600 dark:text-gray-300">4 people</p>
+                    <p class="text-gray-600 dark:text-gray-300">2 people</p>
                 </div>
             </div>
 
@@ -90,13 +95,13 @@
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Description</h2>
                 <p class="text-gray-600 dark:text-gray-300">
-                    This Chickpea Curry is a delicious and nutritious dish that combines tender chickpeas with a rich, spiced tomato-coconut sauce. It's perfect for a cozy dinner and can be served with rice or naan bread.
+                    Vegetable Poha is a popular Indian breakfast dish that combines flattened rice with a medley of fresh vegetables and aromatic spices. It's light, nutritious, and perfect for starting your day.
                 </p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegetarian</span>
                     <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Vegan</span>
                     <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Gluten-Free</span>
-                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">High Protein</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Low Calorie</span>
                 </div>
             </div>
 
@@ -104,20 +109,21 @@
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Ingredients</h2>
                 <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
-                    <li>2 cans (15 oz each) chickpeas, drained and rinsed</li>
+                    <li>2 cups thick poha (flattened rice)</li>
                     <li>1 onion, finely chopped</li>
-                    <li>3 cloves garlic, minced</li>
+                    <li>1 potato, diced</li>
+                    <li>1 carrot, diced</li>
+                    <li>1/2 cup green peas</li>
+                    <li>2 green chilies, finely chopped</li>
                     <li>1 inch ginger, grated</li>
-                    <li>2 tomatoes, diced</li>
-                    <li>1 can (14 oz) coconut milk</li>
-                    <li>2 tbsp curry powder</li>
-                    <li>1 tsp turmeric</li>
-                    <li>1 tsp cumin</li>
-                    <li>1 tsp coriander</li>
-                    <li>1/2 tsp cayenne pepper (optional)</li>
-                    <li>2 tbsp vegetable oil</li>
+                    <li>1/2 tsp mustard seeds</li>
+                    <li>1/2 tsp cumin seeds</li>
+                    <li>1/4 tsp turmeric powder</li>
+                    <li>8-10 curry leaves</li>
+                    <li>2 tbsp oil</li>
                     <li>Salt to taste</li>
-                    <li>Fresh cilantro for garnish</li>
+                    <li>Fresh coriander for garnish</li>
+                    <li>Lemon juice (optional)</li>
                 </ul>
             </div>
 
@@ -125,15 +131,16 @@
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Instructions</h2>
                 <ol class="list-decimal list-inside text-gray-600 dark:text-gray-300 space-y-2">
-                    <li>Heat oil in a large pot over medium heat.</li>
-                    <li>Add onion and cook until translucent, about 5 minutes.</li>
-                    <li>Add garlic and ginger, cook for 1 minute until fragrant.</li>
-                    <li>Add curry powder, turmeric, cumin, and coriander. Stir for 30 seconds.</li>
-                    <li>Add tomatoes and cook until softened, about 5 minutes.</li>
-                    <li>Add chickpeas and coconut milk. Bring to a simmer.</li>
-                    <li>Cook for 15-20 minutes, stirring occasionally, until sauce thickens.</li>
-                    <li>Season with salt and cayenne pepper if desired.</li>
-                    <li>Garnish with fresh cilantro and serve hot with rice or naan.</li>
+                    <li>Rinse the poha in water and drain. Let it sit for 5 minutes to soften.</li>
+                    <li>Heat oil in a pan and add mustard seeds and cumin seeds.</li>
+                    <li>When the seeds crackle, add curry leaves and green chilies.</li>
+                    <li>Add onions and sauté until translucent.</li>
+                    <li>Add potatoes and carrots. Cook for 5 minutes until slightly tender.</li>
+                    <li>Add green peas and cook for 2 minutes.</li>
+                    <li>Add turmeric powder and salt. Mix well.</li>
+                    <li>Add the softened poha and gently mix everything together.</li>
+                    <li>Cook for 3-4 minutes on low heat, stirring occasionally.</li>
+                    <li>Garnish with fresh coriander and serve hot with lemon wedges.</li>
                 </ol>
             </div>
 
@@ -143,11 +150,11 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="text-center">
                         <p class="text-gray-600 dark:text-gray-300">Calories</p>
-                        <p class="text-xl font-semibold text-gray-800 dark:text-white">380</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">250</p>
                     </div>
                     <div class="text-center">
                         <p class="text-gray-600 dark:text-gray-300">Protein</p>
-                        <p class="text-xl font-semibold text-gray-800 dark:text-white">15g</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">6g</p>
                     </div>
                     <div class="text-center">
                         <p class="text-gray-600 dark:text-gray-300">Carbs</p>
@@ -155,20 +162,20 @@
                     </div>
                     <div class="text-center">
                         <p class="text-gray-600 dark:text-gray-300">Fat</p>
-                        <p class="text-xl font-semibold text-gray-800 dark:text-white">18g</p>
+                        <p class="text-xl font-semibold text-gray-800 dark:text-white">8g</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tips -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Tips for Perfect Chickpea Curry</h2>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Tips for Perfect Vegetable Poha</h2>
                 <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
-                    <li>Rinse chickpeas thoroughly to remove excess sodium.</li>
-                    <li>Toast the spices briefly to enhance their flavor.</li>
-                    <li>Use full-fat coconut milk for a creamier texture.</li>
-                    <li>Let the curry simmer to develop deeper flavors.</li>
-                    <li>Adjust spice levels according to your preference.</li>
+                    <li>Use thick poha for better texture and less mushiness.</li>
+                    <li>Don't soak the poha for too long to prevent it from becoming mushy.</li>
+                    <li>Cook vegetables until they are slightly tender but still have a crunch.</li>
+                    <li>Add a squeeze of lemon juice for a tangy flavor.</li>
+                    <li>Serve hot for the best taste and texture.</li>
                 </ul>
             </div>
 
@@ -274,7 +281,7 @@
             
             // Load comments
             function loadComments() {
-                const comments = JSON.parse(localStorage.getItem('chickpea-curry-comments')) || [];
+                const comments = JSON.parse(localStorage.getItem('vegetable-poha-comments')) || [];
                 commentsContainer.innerHTML = comments.map(comment => `
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                         <p class="text-gray-600 dark:text-gray-300">${comment}</p>
@@ -287,9 +294,9 @@
                 e.preventDefault();
                 const commentText = document.getElementById('commentText').value.trim();
                 if (commentText) {
-                    const comments = JSON.parse(localStorage.getItem('chickpea-curry-comments')) || [];
+                    const comments = JSON.parse(localStorage.getItem('vegetable-poha-comments')) || [];
                     comments.push(commentText);
-                    localStorage.setItem('chickpea-curry-comments', JSON.stringify(comments));
+                    localStorage.setItem('vegetable-poha-comments', JSON.stringify(comments));
                     document.getElementById('commentText').value = '';
                     loadComments();
                 }
