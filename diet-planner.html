@@ -209,6 +209,149 @@
         // Set base path for GitHub Pages
         const basePath = '/VitaMeal';
         
+        // Meal plan generation logic
+        const mealDatabase = {
+            breakfast: [
+                { name: "Oatmeal with Berries", calories: 350, protein: 12, carbs: 45, fat: 8, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Greek Yogurt Parfait", calories: 300, protein: 20, carbs: 35, fat: 10, vegetarian: true, vegan: false, glutenFree: true },
+                { name: "Avocado Toast", calories: 320, protein: 8, carbs: 30, fat: 18, vegetarian: true, vegan: true, glutenFree: false },
+                { name: "Protein Smoothie", calories: 280, protein: 25, carbs: 25, fat: 5, vegetarian: true, vegan: true, glutenFree: true }
+            ],
+            lunch: [
+                { name: "Vegetable Stir-Fry", calories: 380, protein: 12, carbs: 40, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Quinoa Bowl", calories: 400, protein: 15, carbs: 45, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Mediterranean Salad", calories: 350, protein: 10, carbs: 35, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Vegetable Wrap", calories: 320, protein: 12, carbs: 45, fat: 15, vegetarian: true, vegan: true, glutenFree: false }
+            ],
+            dinner: [
+                { name: "Vegetable Curry", calories: 480, protein: 15, carbs: 45, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Tofu Stir-Fry", calories: 420, protein: 20, carbs: 40, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Mushroom Risotto", calories: 450, protein: 12, carbs: 50, fat: 22, vegetarian: true, vegan: false, glutenFree: false },
+                { name: "Vegetable Pasta", calories: 400, protein: 15, carbs: 55, fat: 15, vegetarian: true, vegan: true, glutenFree: false }
+            ],
+            snacks: [
+                { name: "Mixed Nuts", calories: 160, protein: 6, carbs: 8, fat: 14, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Apple with Peanut Butter", calories: 200, protein: 6, carbs: 25, fat: 10, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Hummus with Vegetables", calories: 180, protein: 8, carbs: 20, fat: 9, vegetarian: true, vegan: true, glutenFree: true },
+                { name: "Trail Mix", calories: 170, protein: 5, carbs: 15, fat: 12, vegetarian: true, vegan: true, glutenFree: true }
+            ]
+        };
+
+        function generateMealPlan() {
+            const goal = document.getElementById('goal').value;
+            const activityLevel = document.getElementById('activityLevel').value;
+            const isVegetarian = document.getElementById('vegetarian').checked;
+            const isVegan = document.getElementById('vegan').checked;
+            const isGlutenFree = document.getElementById('glutenFree').checked;
+            const mealsPerDay = parseInt(document.getElementById('mealsPerDay').value);
+            const calorieTarget = parseInt(document.getElementById('calorieTarget').value) || 2000;
+            const allergies = document.getElementById('allergies').value.toLowerCase();
+
+            // Calculate daily macro targets based on goal
+            let macroTargets = {
+                protein: 0,
+                carbs: 0,
+                fat: 0
+            };
+
+            switch(goal) {
+                case 'weight-loss':
+                    macroTargets = { protein: 0.4, carbs: 0.3, fat: 0.3 };
+                    break;
+                case 'muscle-gain':
+                    macroTargets = { protein: 0.4, carbs: 0.4, fat: 0.2 };
+                    break;
+                case 'maintenance':
+                    macroTargets = { protein: 0.3, carbs: 0.4, fat: 0.3 };
+                    break;
+                case 'healthy-eating':
+                    macroTargets = { protein: 0.3, carbs: 0.45, fat: 0.25 };
+                    break;
+            }
+
+            // Generate meal plan for each day
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            let mealPlanHTML = '';
+
+            days.forEach(day => {
+                mealPlanHTML += `
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">${day}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-${mealsPerDay} gap-4">
+                `;
+
+                // Add meals based on mealsPerDay
+                const mealTypes = ['breakfast', 'lunch', 'dinner'];
+                if (mealsPerDay > 3) {
+                    mealTypes.push('snacks');
+                }
+
+                mealTypes.forEach(mealType => {
+                    const meal = selectMeal(mealType, isVegetarian, isVegan, isGlutenFree, allergies);
+                    mealPlanHTML += `
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">${mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h4>
+                            <p class="text-gray-600 dark:text-gray-300">${meal.name}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                ${meal.calories} cal | P: ${meal.protein}g | C: ${meal.carbs}g | F: ${meal.fat}g
+                            </p>
+                        </div>
+                    `;
+                });
+
+                mealPlanHTML += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('mealPlanContent').innerHTML = mealPlanHTML;
+            document.getElementById('mealPlanDisplay').classList.remove('hidden');
+        }
+
+        function selectMeal(mealType, isVegetarian, isVegan, isGlutenFree, allergies) {
+            let availableMeals = mealDatabase[mealType].filter(meal => {
+                if (isVegan && !meal.vegan) return false;
+                if (isVegetarian && !meal.vegetarian) return false;
+                if (isGlutenFree && !meal.glutenFree) return false;
+                if (allergies && meal.name.toLowerCase().includes(allergies)) return false;
+                return true;
+            });
+
+            if (availableMeals.length === 0) {
+                return {
+                    name: "Custom meal (consult nutritionist)",
+                    calories: 0,
+                    protein: 0,
+                    carbs: 0,
+                    fat: 0
+                };
+            }
+
+            return availableMeals[Math.floor(Math.random() * availableMeals.length)];
+        }
+
+        function saveMealPlan() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                alert('Please log in to save your meal plan');
+                return;
+            }
+
+            const mealPlan = {
+                date: new Date().toISOString(),
+                content: document.getElementById('mealPlanContent').innerHTML
+            };
+
+            let savedPlans = JSON.parse(localStorage.getItem('savedMealPlans')) || {};
+            if (!savedPlans[user.email]) {
+                savedPlans[user.email] = [];
+            }
+            savedPlans[user.email].push(mealPlan);
+            localStorage.setItem('savedMealPlans', JSON.stringify(savedPlans));
+            alert('Meal plan saved successfully!');
+        }
+        
         // Update all navigation links
         document.addEventListener('DOMContentLoaded', function() {
             // Update navigation links
@@ -269,149 +412,6 @@
                 localStorage.removeItem('currentUser');
                 window.location.href = basePath + '/login.html';
             };
-
-            // Meal plan generation logic
-            const mealDatabase = {
-                breakfast: [
-                    { name: "Oatmeal with Berries", calories: 350, protein: 12, carbs: 45, fat: 8, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Greek Yogurt Parfait", calories: 300, protein: 20, carbs: 35, fat: 10, vegetarian: true, vegan: false, glutenFree: true },
-                    { name: "Avocado Toast", calories: 320, protein: 8, carbs: 30, fat: 18, vegetarian: true, vegan: true, glutenFree: false },
-                    { name: "Protein Smoothie", calories: 280, protein: 25, carbs: 25, fat: 5, vegetarian: true, vegan: true, glutenFree: true }
-                ],
-                lunch: [
-                    { name: "Vegetable Stir-Fry", calories: 380, protein: 12, carbs: 40, fat: 15, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Quinoa Bowl", calories: 400, protein: 15, carbs: 45, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Mediterranean Salad", calories: 350, protein: 10, carbs: 35, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Vegetable Wrap", calories: 320, protein: 12, carbs: 45, fat: 15, vegetarian: true, vegan: true, glutenFree: false }
-                ],
-                dinner: [
-                    { name: "Vegetable Curry", calories: 480, protein: 15, carbs: 45, fat: 20, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Tofu Stir-Fry", calories: 420, protein: 20, carbs: 40, fat: 18, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Mushroom Risotto", calories: 450, protein: 12, carbs: 50, fat: 22, vegetarian: true, vegan: false, glutenFree: false },
-                    { name: "Vegetable Pasta", calories: 400, protein: 15, carbs: 55, fat: 15, vegetarian: true, vegan: true, glutenFree: false }
-                ],
-                snacks: [
-                    { name: "Mixed Nuts", calories: 160, protein: 6, carbs: 8, fat: 14, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Apple with Peanut Butter", calories: 200, protein: 6, carbs: 25, fat: 10, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Hummus with Vegetables", calories: 180, protein: 8, carbs: 20, fat: 9, vegetarian: true, vegan: true, glutenFree: true },
-                    { name: "Trail Mix", calories: 170, protein: 5, carbs: 15, fat: 12, vegetarian: true, vegan: true, glutenFree: true }
-                ]
-            };
-
-            function generateMealPlan() {
-                const goal = document.getElementById('goal').value;
-                const activityLevel = document.getElementById('activityLevel').value;
-                const isVegetarian = document.getElementById('vegetarian').checked;
-                const isVegan = document.getElementById('vegan').checked;
-                const isGlutenFree = document.getElementById('glutenFree').checked;
-                const mealsPerDay = parseInt(document.getElementById('mealsPerDay').value);
-                const calorieTarget = parseInt(document.getElementById('calorieTarget').value) || 2000;
-                const allergies = document.getElementById('allergies').value.toLowerCase();
-
-                // Calculate daily macro targets based on goal
-                let macroTargets = {
-                    protein: 0,
-                    carbs: 0,
-                    fat: 0
-                };
-
-                switch(goal) {
-                    case 'weight-loss':
-                        macroTargets = { protein: 0.4, carbs: 0.3, fat: 0.3 };
-                        break;
-                    case 'muscle-gain':
-                        macroTargets = { protein: 0.4, carbs: 0.4, fat: 0.2 };
-                        break;
-                    case 'maintenance':
-                        macroTargets = { protein: 0.3, carbs: 0.4, fat: 0.3 };
-                        break;
-                    case 'healthy-eating':
-                        macroTargets = { protein: 0.3, carbs: 0.45, fat: 0.25 };
-                        break;
-                }
-
-                // Generate meal plan for each day
-                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                let mealPlanHTML = '';
-
-                days.forEach(day => {
-                    mealPlanHTML += `
-                        <div class="mb-8">
-                            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">${day}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-${mealsPerDay} gap-4">
-                    `;
-
-                    // Add meals based on mealsPerDay
-                    const mealTypes = ['breakfast', 'lunch', 'dinner'];
-                    if (mealsPerDay > 3) {
-                        mealTypes.push('snacks');
-                    }
-
-                    mealTypes.forEach(mealType => {
-                        const meal = selectMeal(mealType, isVegetarian, isVegan, isGlutenFree, allergies);
-                        mealPlanHTML += `
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                                <h4 class="font-medium text-gray-800 dark:text-white mb-2">${mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h4>
-                                <p class="text-gray-600 dark:text-gray-300">${meal.name}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                    ${meal.calories} cal | P: ${meal.protein}g | C: ${meal.carbs}g | F: ${meal.fat}g
-                                </p>
-                            </div>
-                        `;
-                    });
-
-                    mealPlanHTML += `
-                            </div>
-                        </div>
-                    `;
-                });
-
-                document.getElementById('mealPlanContent').innerHTML = mealPlanHTML;
-                document.getElementById('mealPlanDisplay').classList.remove('hidden');
-            }
-
-            function selectMeal(mealType, isVegetarian, isVegan, isGlutenFree, allergies) {
-                let availableMeals = mealDatabase[mealType].filter(meal => {
-                    if (isVegan && !meal.vegan) return false;
-                    if (isVegetarian && !meal.vegetarian) return false;
-                    if (isGlutenFree && !meal.glutenFree) return false;
-                    if (allergies && meal.name.toLowerCase().includes(allergies)) return false;
-                    return true;
-                });
-
-                if (availableMeals.length === 0) {
-                    return {
-                        name: "Custom meal (consult nutritionist)",
-                        calories: 0,
-                        protein: 0,
-                        carbs: 0,
-                        fat: 0
-                    };
-                }
-
-                return availableMeals[Math.floor(Math.random() * availableMeals.length)];
-            }
-
-            function saveMealPlan() {
-                const user = JSON.parse(localStorage.getItem('currentUser'));
-                if (!user) {
-                    alert('Please log in to save your meal plan');
-                    return;
-                }
-
-                const mealPlan = {
-                    date: new Date().toISOString(),
-                    content: document.getElementById('mealPlanContent').innerHTML
-                };
-
-                let savedPlans = JSON.parse(localStorage.getItem('savedMealPlans')) || {};
-                if (!savedPlans[user.email]) {
-                    savedPlans[user.email] = [];
-                }
-                savedPlans[user.email].push(mealPlan);
-                localStorage.setItem('savedMealPlans', JSON.stringify(savedPlans));
-                alert('Meal plan saved successfully!');
-            }
 
             // Handle meal plan form submission
             const mealPlanForm = document.getElementById('mealPlanForm');
