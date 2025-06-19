@@ -1,4 +1,4 @@
-# VitaMeal
+# PlatePilot
 
 A modern web application for healthy recipes, interactive games, and AI-powered diet planning.
 
